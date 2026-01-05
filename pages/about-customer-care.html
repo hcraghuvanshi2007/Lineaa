@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Customer Care – Linea</title>
+
+<style>
+:root {
+  --text-main: #1a1a1a;
+  --text-muted: #777;
+  --border: #e6e6e6;
+  --max-width: 1200px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  color: var(--text-main);
+  background: #fff;
+  line-height: 1.7;
+}
+
+
+/* ================= NAVBAR ================= */
+.navbar {
+  background: #ffffff;
+  border-bottom: 1px solid #e6e6e6;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.navbar-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 32px;
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.navbar-logo {
+  font-size: 24px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+}
+
+.navbar-menu {
+  display: flex;
+  gap: 40px;
+}
+
+.nav-dropdown {
+  position: relative;
+}
+
+.dropdown-toggle {
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #222;
+  text-decoration: none;
+  padding: 8px 0;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 220px;
+  background: #fff;
+  border: 1px solid #e6e6e6;
+  padding: 12px 0;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition: all 0.25s ease;
+  z-index: 999;
+}
+
+.nav-dropdown:hover .dropdown-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.dropdown-item {
+  display: block;
+  padding: 10px 24px;
+  font-size: 14px;
+  color: #555;
+  text-decoration: none;
+}
+
+.dropdown-item:hover {
+  background: #f7f7f7;
+  color: #000;
+}
+
+/* ================= HERO ================= */
+.page-hero {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 120px 24px 80px;
+}
+
+.page-hero h1 {
+  font-size: 48px;
+  font-weight: 400;
+  margin-bottom: 16px;
+}
+
+.page-hero p {
+  font-size: 18px;
+  color: var(--text-muted);
+}
+
+.divider {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin-top: 64px;
+}
+
+/* ================= SECTIONS ================= */
+.section {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 100px 24px;
+}
+
+.section h2 {
+  font-size: 32px;
+  font-weight: 400;
+  margin-bottom: 48px;
+}
+
+/* ================= CONTACT INFO ================= */
+.contact-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 80px;
+}
+
+.contact-block h3 {
+  font-size: 18px;
+  margin-bottom: 12px;
+}
+
+.contact-block p {
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+.chat-btn {
+  margin-top: 16px;
+  padding: 10px 18px;
+  border: 1px solid var(--border);
+  background: #fff;
+  cursor: pointer;
+}
+
+/* ================= FAQ ================= */
+.faq {
+  max-width: 900px;
+}
+
+.faq-item {
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  margin-bottom: 16px;
+}
+
+.faq-question {
+  padding: 18px 24px;
+  font-size: 15px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.faq-answer {
+  display: none;
+  padding: 0 24px 18px;
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+.faq-item.active .faq-answer {
+  display: block;
+}
+
+/* ================= FORM ================= */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  font-size: 14px;
+  margin-bottom: 6px;
+}
+
+.form-group input,
+.form-group textarea {
+  padding: 12px;
+  border: 1px solid var(--border);
+  font-size: 14px;
+}
+
+.form-group.full {
+  grid-column: 1 / -1;
+}
+
+.submit-btn {
+  margin-top: 24px;
+  padding: 16px;
+  width: 100%;
+  background: #111;
+  color: #fff;
+  border: none;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.footer {
+  border-top: 1px solid #e6e6e6;
+  margin-top: 120px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+/* TOP AREA */
+.footer-top {
+  padding: 64px 48px;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 48px;
+}
+
+/* BRAND COLUMN */
+.footer-brand h3 {
+  font-size: 30px;
+  margin-bottom: 12px;
+  color: #111;
+}
+
+.tagline {
+  font-size: 14px;
+  color: #777;
+  margin-bottom: 24px;
+}
+
+.footer-block {
+  margin-bottom: 20px;
+}
+
+.footer-block strong {
+  font-size: 14px;
+  display: block;
+  margin-bottom: 6px;
+  color: #111;
+}
+
+.footer-block p {
+  font-size: 14px;
+  color: #555;
+  line-height: 1.6;
+}
+
+/* LINKS */
+.footer-links h4 {
+  font-size: 14px;
+  margin-bottom: 16px;
+  color: #111;
+}
+
+.footer-links a {
+  display: block;
+  font-size: 14px;
+  color: #666;
+  text-decoration: none;
+  margin-bottom: 10px;
+}
+
+.footer-links a:hover {
+  color: #000;
+}
+
+/* BOTTOM BAR */
+.footer-bottom {
+  border-top: 1px solid #e6e6e6;
+  padding: 16px 48px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  color: #666;
+  border-bottom: 1px solid #e6e6e6;
+}
+
+.footer-legal a {
+  margin-left: 24px;
+  color: #666;
+  text-decoration: none;
+}
+
+.footer-legal a:hover {
+  color: #000;
+}
+
+/* RESPONSIVE */
+@media (max-width: 1024px) {
+  .footer-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+  }
+}
+
+@media (max-width: 640px) {
+  .footer-top {
+    padding: 48px 20px;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    gap: 12px;
+    padding: 16px 20px;
+  }
+
+  .footer-legal a {
+    margin-left: 16px;
+  }
+}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 1024px) {
+  .contact-grid,
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .page-hero h1 {
+    font-size: 34px;
+  }
+
+  .section {
+    padding: 72px 20px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="navbar-container">
+    <div class="navbar-logo">
+      <a href="../index.html" style="text-decoration:none;color:inherit;">LINEA</a>
+    </div>
+
+    <div class="navbar-menu">
+      <div class="nav-dropdown">
+        <a href="../pages/shop.html" class="dropdown-toggle">Shop</a>
+        <div class="dropdown-menu">
+          <a class="dropdown-item" href="#">Rings</a>
+          <a class="dropdown-item" href="#">Necklaces</a>
+          <a class="dropdown-item" href="#">Earrings</a>
+          <a class="dropdown-item" href="#">Bracelets</a>
+        </div>
+      </div>
+
+      <div class="nav-dropdown">
+        <a href="#" class="dropdown-toggle">New In</a>
+        <div class="dropdown-menu">
+            <a href="pages/new-in.html?filter=this-weeks-arrivals" class="dropdown-item">This Week's Arrivals</a>
+            <a href="pages/new-in.html?filter=spring-collection" class="dropdown-item">Spring Collection</a>
+            <a href="pages/new-in.html?filter=featured-designers" class="dropdown-item">Featured Designers</a>
+            <a href="pages/new-in.html?filter=limited-edition" class="dropdown-item">Limited Edition</a>
+            <a href="pages/new-in.html?filter=pre-orders" class="dropdown-item">Pre-Orders</a>
+
+        </div>
+      </div>
+
+      <div class="nav-dropdown">
+        <a href="#" class="dropdown-toggle">About</a>
+        <div class="dropdown-menu">
+          <a class="dropdown-item" href="about-story.html">Our Story</a>
+          <a class="dropdown-item" href="about-sustainability.html">Sustainability</a>
+          <a class="dropdown-item" href="about-size-guide.html">Size Guide</a>
+          <a class="dropdown-item" href="about-customer-care.html">Customer Care</a>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="page-hero">
+  <h1>Customer Care</h1>
+  <p>We're here to help you with all your jewelry needs</p>
+  <hr class="divider">
+</section>
+
+<!-- CONTACT INFO -->
+<section class="section">
+  <h2>Contact Information</h2>
+
+  <div class="contact-grid">
+    <div class="contact-block">
+      <h3>Phone</h3>
+      <p>+1 (555) 123-4567</p>
+      <p>Mon–Fri: 9AM–6PM EST<br>Sat: 10AM–4PM EST</p>
+    </div>
+
+    <div class="contact-block">
+      <h3>Email</h3>
+      <p>care@lineajewelry.com</p>
+      <p>Response within 24 hours</p>
+    </div>
+
+    <div class="contact-block">
+      <h3>Live Chat</h3>
+      <button class="chat-btn">Start Chat</button>
+      <p>Available during business hours</p>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section">
+  <h2>Frequently Asked Questions</h2>
+
+  <div class="faq">
+    <div class="faq-item">
+      <div class="faq-question">What are your shipping options and timeframes?</div>
+      <div class="faq-answer">We offer standard and express shipping options. Delivery times vary by location.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question">What is your return and exchange policy?</div>
+      <div class="faq-answer">Returns are accepted within 30 days of purchase in original condition.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question">What warranty do you offer on your jewelry?</div>
+      <div class="faq-answer">All LINEA jewelry comes with a one-year craftsmanship warranty.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question">Can I resize my jewelry after purchase?</div>
+      <div class="faq-answer">Yes, resizing services are available depending on the design.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question">How should I care for my LINEA jewelry?</div>
+      <div class="faq-answer">We recommend gentle cleaning and storing pieces separately.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question">How can I verify the authenticity of my jewelry?</div>
+      <div class="faq-answer">Each piece comes with a certificate of authenticity.</div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT FORM -->
+<section class="section">
+  <h2>Contact Form</h2>
+
+  <form>
+    <div class="form-grid">
+      <div class="form-group">
+        <label>First Name</label>
+        <input type="text" placeholder="Enter your first name">
+      </div>
+
+      <div class="form-group">
+        <label>Last Name</label>
+        <input type="text" placeholder="Enter your last name">
+      </div>
+
+      <div class="form-group full">
+        <label>Email</label>
+        <input type="email" placeholder="Enter your email">
+      </div>
+
+      <div class="form-group full">
+        <label>Order Number (Optional)</label>
+        <input type="text" placeholder="Enter your order number if applicable">
+      </div>
+
+      <div class="form-group full">
+        <label>How can we help you?</label>
+        <textarea rows="5" placeholder="Please describe your inquiry in detail"></textarea>
+      </div>
+    </div>
+
+    <button class="submit-btn">Send Message</button>
+  </form>
+</section>
+
+<footer class="footer">
+
+  <div class="footer-top">
+    <div class="footer-grid">
+
+      <!-- BRAND -->
+      <div class="footer-brand">
+        <h3>Linea Jewelry Inc.</h3>
+        <p class="tagline">
+          Minimalist jewelry crafted for the modern individual
+        </p>
+
+        <div class="footer-block">
+          <strong>Visit Us</strong>
+          <p>
+            123 Madison Avenue<br>
+            New York, NY 10016
+          </p>
+        </div>
+
+        <div class="footer-block">
+          <strong>Contact</strong>
+          <p>
+            +1 (212) 555-0123<br>
+            hello@lineajewelry.com
+          </p>
+        </div>
+      </div>
+
+      <!-- SHOP -->
+      <div class="footer-links">
+        <h4>Shop</h4>
+        <a href="#">New In</a>
+        <a href="#">Rings</a>
+        <a href="#">Earrings</a>
+        <a href="#">Bracelets</a>
+        <a href="#">Necklaces</a>
+      </div>
+
+      <!-- SUPPORT -->
+      <div class="footer-links">
+        <h4>Support</h4>
+        <a href="#">Size Guide</a>
+        <a href="#">Care Instructions</a>
+        <a href="#">Returns</a>
+        <a href="#">Shipping</a>
+        <a href="#">Contact</a>
+      </div>
+
+      <!-- CONNECT -->
+      <div class="footer-links">
+        <h4>Connect</h4>
+        <a href="#">Instagram</a>
+        <a href="#">Pinterest</a>
+        <a href="#">Newsletter</a>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- BOTTOM BAR -->
+  <div class="footer-bottom">
+    <p>© 2024 Linea. All rights reserved.</p>
+
+    <div class="footer-legal">
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms of Service</a>
+    </div>
+  </div>
+
+</footer>
+
+
+<script>
+document.querySelectorAll(".faq-question").forEach(q => {
+  q.addEventListener("click", () => {
+    q.parentElement.classList.toggle("active");
+  });
+});
+</script>
+
+</body>
+</html>

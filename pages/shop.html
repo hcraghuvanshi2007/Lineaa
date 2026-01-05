@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop - LINEA Jewelry</title>
+    <style>
+        /* ROOT VARIABLES */
+        :root {
+            --color-primary: #218080;
+            --color-primary-hover: #1a7472;
+            --color-primary-active: #1a6873;
+            --color-text: #133435;
+            --color-text-secondary: #626C7C;
+            --color-surface: #FFFDF9;
+            --color-background: #FCFCF9;
+            --color-border: #E0D8CE;
+            --color-secondary: rgba(33, 128, 141, 0.12);
+            --color-secondary-hover: rgba(33, 128, 141, 0.2);
+        }
+
+        /* GLOBAL STYLES */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            font-size: 16px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.5;
+            color: var(--color-text);
+            background-color: var(--color-background);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        /* NAVBAR STYLES */
+        .navbar {
+            background-color: var(--color-surface);
+            border-bottom: 1px solid var(--color-border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+        }
+
+        .navbar-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 70px;
+        }
+
+        .navbar-logo {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--color-text);
+            text-decoration: none;
+        }
+
+        .navbar-menu {
+            display: flex;
+            gap: 30px;
+            flex: 1;
+            margin-left: 50px;
+        }
+
+        .nav-dropdown {
+            position: relative;
+        }
+
+        .dropdown-toggle {
+            color: var(--color-text);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+        }
+
+        .dropdown-toggle::after {
+            content: '▼';
+            font-size: 10px;
+            color: var(--color-text-secondary);
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            min-width: 200px;
+            padding: 10px 0;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            margin-top: 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .nav-dropdown:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            margin-top: 5px;
+        }
+
+        .dropdown-item {
+            display: block;
+            padding: 10px 20px;
+            color: var(--color-text);
+            text-decoration: none;
+            font-size: 14px;
+            transition: background-color 0.2s ease;
+        }
+
+        .dropdown-item:hover {
+            background-color: var(--color-secondary);
+        }
+
+        .navbar-icons {
+            display: flex;
+            gap: 20px;
+        }
+
+        .icon-btn {
+            background: none;
+            border: none;
+            color: var(--color-text);
+            cursor: pointer;
+            font-size: 20px;
+            padding: 5px;
+            transition: color 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .icon-btn:hover {
+            color: var(--color-primary);
+        }
+
+        /* SHOP CONTAINER */
+        .shop-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* Shop Layout */
+        .shop-layout {
+            display: grid;
+            grid-template-columns: 260px 1fr;
+            gap: 40px;
+        }
+
+        /* Sidebar Filters */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+            position: sticky;
+            top: 90px;
+            height: fit-content;
+        }
+
+        .filter-group h3 {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: var(--color-text);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .filter-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+            gap: 10px;
+        }
+
+        .filter-item input[type="checkbox"] {
+            cursor: pointer;
+            width: 18px;
+            height: 18px;
+            accent-color: var(--color-primary);
+            border-radius: 3px;
+        }
+
+        .filter-item label {
+            cursor: pointer;
+            font-size: 14px;
+            color: var(--color-text-secondary);
+            flex: 1;
+            transition: color 0.3s ease;
+        }
+
+        .filter-item input[type="checkbox"]:checked + label {
+            color: var(--color-text);
+            font-weight: 500;
+        }
+
+        /* Main Content */
+        .shop-content {
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+        }
+
+        /* Controls Bar */
+        .controls-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            padding: 0 0 20px 0;
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .results-count {
+            font-size: 14px;
+            color: var(--color-text-secondary);
+        }
+
+        .results-count strong {
+            color: var(--color-text);
+            font-weight: 600;
+        }
+
+        .sort-dropdown {
+            padding: 10px 14px;
+            border: 1px solid var(--color-border);
+            border-radius: 6px;
+            background: #ffffff;
+            color: var(--color-text);
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .sort-dropdown:hover {
+            border-color: var(--color-primary);
+        }
+
+        /* Product Grid */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            margin-top: 20px;
+        }
+
+        .product-card {
+            background: transparent;
+            border-radius: 6px;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+
+        .product-card:hover {
+            transform: translateY(-4px);
+        }
+
+        .product-image {
+            width: 100%;
+            aspect-ratio: 1;
+            background: var(--color-background);
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 16px;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+            transition: transform 0.4s ease;
+        }
+
+        .product-card:hover .product-image img {
+            transform: scale(1.05);
+        }
+
+        .product-info {
+            padding: 0;
+        }
+
+        .product-category {
+            font-size: 12px;
+            color: var(--color-text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .product-name {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--color-text);
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+
+        .product-price {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--color-primary);
+        }
+
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 48px;
+            flex-wrap: wrap;
+        }
+
+        .pagination button,
+        .pagination a {
+            padding: 10px 14px;
+            border: 1px solid var(--color-border);
+            background: #ffffff;
+            color: var(--color-text);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+            font-weight: 500;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 40px;
+            height: 40px;
+        }
+
+        .pagination button:hover,
+        .pagination a:hover {
+            background: var(--color-primary);
+            color: white;
+            border-color: var(--color-primary);
+        }
+
+        .pagination .active {
+            background: var(--color-primary);
+            color: white;
+            border-color: var(--color-primary);
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--color-text);
+            color: white;
+            padding: 60px 20px 20px;
+            margin-top: 80px;
+        }
+
+        .footer-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-section h3,
+        .footer-section h4 {
+            margin-bottom: 15px;
+        }
+
+        .footer-section p {
+            font-size: 14px;
+            line-height: 1.6;
+            opacity: 0.8;
+        }
+
+        .footer-address {
+            margin-top: 15px;
+        }
+
+        .footer-links {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+            transition: opacity 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            opacity: 0.7;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            font-size: 12px;
+            opacity: 0.7;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .shop-container {
+                padding: 32px 24px;
+            }
+
+            .shop-layout {
+                grid-template-columns: 220px 1fr;
+                gap: 32px;
+            }
+
+            .product-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 32px;
+            }
+
+            .navbar-container {
+                padding: 0 24px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar-menu {
+                display: none;
+            }
+
+            .shop-container {
+                padding: 24px 16px;
+            }
+
+            .shop-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                display: none;
+            }
+
+            .product-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 24px;
+            }
+
+            .controls-bar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .sort-dropdown {
+                width: 100%;
+            }
+
+            .footer-container {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 32px;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .product-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .navbar-container {
+                height: 60px;
+            }
+
+            .shop-container {
+                padding: 20px 16px;
+            }
+
+            .footer-container {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <div class="navbar-logo">
+                <a href="..\index.html" style="text-decoration: none; color: inherit;">
+                    LINEA
+                </a>
+            </div>
+            
+            <div class="navbar-menu">
+                <div class="nav-dropdown">
+                    <a href="pages/shop.html" class="dropdown-toggle">Shop</a>
+                    <div class="dropdown-menu">
+                        <a href="shop.html?category=rings" class="dropdown-item">Rings</a>
+                        <a href="shop.html?category=necklaces" class="dropdown-item">Necklaces</a>
+                        <a href="shop.html?category=earrings" class="dropdown-item">Earrings</a>
+                        <a href="shop.html?category=bracelets" class="dropdown-item">Bracelets</a>
+                        <a href="shop.html?category=watches" class="dropdown-item">Watches</a>
+                    </div>
+                </div>
+                
+                <div class="nav-dropdown">
+                    <a href="pages/new-in.html" class="dropdown-toggle">New In</a>
+                    <div class="dropdown-menu">
+                        <a href="new-in.html?filter=this-weeks-arrivals" class="dropdown-item">This Week's Arrivals</a>
+                        <a href="new-in.html?filter=spring-collection" class="dropdown-item">Spring Collection</a>
+                        <a href="new-in.html?filter=featured-designers" class="dropdown-item">Featured Designers</a>
+                        <a href="new-in.html?filter=limited-edition" class="dropdown-item">Limited Edition</a>
+                        <a href="new-in.html?filter=pre-orders" class="dropdown-item">Pre-Orders</a>
+                    </div>
+                </div>
+                
+                <div class="nav-dropdown">
+                    <a href="pages/about.html" class="dropdown-toggle">About</a>
+                    <div class="dropdown-menu">
+                        <a href="about-story.html" class="dropdown-item">Our Story</a>
+                        <a href="about-sustainability.html" class="dropdown-item">Sustainability</a>
+                        <a href="about-size-guide.html" class="dropdown-item">Size Guide</a>
+                        <a href="about-customer-care.html" class="dropdown-item">Customer Care</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="navbar-icons">
+                <button class="icon-btn" aria-label="Search" id="search-btn">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <path d="m21 21-4.35-4.35"></path>
+                    </svg>
+                </button>
+                <button class="icon-btn" aria-label="User Account" id="account-btn">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                </button>
+                <button class="icon-btn" aria-label="Wishlist" id="wishlist-btn">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                    </svg>
+                </button>
+                <button class="icon-btn" aria-label="Shopping Cart" id="cart-btn">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="9" cy="21" r="1"></circle>
+                        <circle cx="20" cy="21" r="1"></circle>
+                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        
+    </nav>
+    <!-- Main Content -->
+    <main class="shop-container">
+        <div class="shop-layout">
+            <!-- Sidebar Filters -->
+            <aside class="sidebar">
+                <div class="filter-group">
+                    <h3>Category</h3>
+                    <div class="filter-item">
+                        <input type="checkbox" id="rings" value="rings">
+                        <label for="rings">Rings</label>
+                    </div>
+                    <div class="filter-item">
+                        <input type="checkbox" id="necklaces" value="necklaces">
+                        <label for="necklaces">Necklaces</label>
+                    </div>
+                    <div class="filter-item">
+                        <input type="checkbox" id="earrings" value="earrings">
+                        <label for="earrings">Earrings</label>
+                    </div>
+                    <div class="filter-item">
+                        <input type="checkbox" id="bracelets" value="bracelets">
+                        <label for="bracelets">Bracelets</label>
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <h3>Price Range</h3>
+                    <div class="filter-item">
+                        <input type="checkbox" id="price1" value="0-500">
+                        <label for="price1">Under €500</label>
+                    </div>
+                    <div class="filter-item">
+                        <input type="checkbox" id="price2" value="500-1000">
+                        <label for="price2">€500 - €1,000</label>
+                    </div>
+                    <div class="filter-item">
+                        <input type="checkbox" id="price3" value="1000-5000">
+                        <label for="price3">€1,000 - €5,000</label>
+                    </div>
+                    <div class="filter-item">
+                        <input type="checkbox" id="price4" value="5000+">
+                        <label for="price4">€5,000+</label>
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <h3>Material</h3>
+                    <div class="filter-item">
+                        <input type="checkbox" id="gold" value="gold">
+                        <label for="gold">Gold</label>
+                    </div>
+                    <div class="filter-item">
+                        <input type="checkbox" id="silver" value="silver">
+                        <label for="silver">Silver</label>
+                    </div>
+                    <div class="filter-item">
+                        <input type="checkbox" id="platinum" value="platinum">
+                        <label for="platinum">Platinum</label>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Main Content -->
+            <div class="shop-content">
+                <!-- Controls Bar -->
+                <div class="controls-bar">
+                    <span class="results-count">Showing <strong id="result-count">12</strong> products</span>
+                    <select class="sort-dropdown" id="sort-select">
+                        <option value="featured">Featured</option>
+                        <option value="newest">Newest</option>
+                        <option value="price-asc">Price: Low to High</option>
+                        <option value="price-desc">Price: High to Low</option>
+                        <option value="popular">Most Popular</option>
+                    </select>
+                </div>
+
+                <!-- Product Grid -->
+                <div class="product-grid" id="product-grid">
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="..\assets\images\halo-CMlMG7vQ.jpg" alt="Halo">
+                        </div>
+                        <div class="product-info">
+                            <div class="product-category">Earrings</div>
+                            <div class="product-name">Halo</div>
+                            <div class="product-price">€119</div>
+                        </div>
+                    </div>
+
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="..\assets\images\oblique-BrLAWbgb.jpg" alt="Oblique">
+                        </div>
+                        <div class="product-info">
+                            <div class="product-category">Earrings</div>
+                            <div class="product-name">Oblique</div>
+                            <div class="product-price">€179</div>
+                        </div>
+                    </div>
+
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="..\assets\images\shadowline-DPSA61jB.jpg" alt="Shadow Line">
+                        </div>
+                        <div class="product-info">
+                            <div class="product-category">Bracelet</div>
+                            <div class="product-name">Shadow Line</div>
+                            <div class="product-price">€349</div>
+                        </div>
+                    </div>
+
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="..\assets\images\pantheon-ChbEbbTu.jpg" alt="Pantheon">
+                        </div>
+                        <div class="product-info">
+                            <div class="product-category">Earrings</div>
+                            <div class="product-name">Pantheon</div>
+                            <div class="product-price">€129</div>
+                        </div>
+                    </div>
+
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="..\assets\images\eclipse-ErA5xE4T.jpg" alt="Eclipse">
+                        </div>
+                        <div class="product-info">
+                            <div class="product-category">Bracelets</div>
+                            <div class="product-name">Eclipse</div>
+                            <div class="product-price">€399</div>
+                        </div>
+                    </div>
+
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="..\assets\images\halo-CMlMG7vQ.jpg" alt="Halo">
+                        </div>
+                        <div class="product-info">
+                            <div class="product-category">Earrings</div>
+                            <div class="product-name">Halo</div>
+                            <div class="product-price">€119</div>
+                        </div>
+                    </div>
+
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="..\assets\images\oblique-BrLAWbgb.jpg" alt="Oblique">
+                        </div>
+                        <div class="product-info">
+                            <div class="product-category">Earrings</div>
+                            <div class="product-name">Oblique</div>
+                            <div class="product-price">€179</div>
+                        </div>
+                    </div>
+
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="..\assets\images\shadowline-DPSA61jB.jpg" alt="Shadow Line">
+                        </div>
+                        <div class="product-info">
+                            <div class="product-category">Bracelet</div>
+                            <div class="product-name">Shadow Line</div>
+                            <div class="product-price">€349</div>
+                        </div>
+                    </div>
+
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="..\assets\images\pantheon-ChbEbbTu.jpg" alt="Pantheon">
+                        </div>
+                        <div class="product-info">
+                            <div class="product-category">Earrings</div>
+                            <div class="product-name">Pantheon</div>
+                            <div class="product-price">€129</div>
+                        </div>
+                    </div>
+
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="..\assets\images\eclipse-ErA5xE4T.jpg" alt="Eclipse">
+                        </div>
+                        <div class="product-info">
+                            <div class="product-category">Bracelets</div>
+                            <div class="product-name">Eclipse</div>
+                            <div class="product-price">€399</div>
+                        </div>
+                    </div>
+
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="..\assets\images\halo-CMlMG7vQ.jpg" alt="Halo">
+                        </div>
+                        <div class="product-info">
+                            <div class="product-category">Earrings</div>
+                            <div class="product-name">Halo</div>
+                            <div class="product-price">€119</div>
+                        </div>
+                    </div>
+
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="..\assets\images\oblique-BrLAWbgb.jpg" alt="Oblique">
+                        </div>
+                        <div class="product-info">
+                            <div class="product-category">Earrings</div>
+                            <div class="product-name">Oblique</div>
+                            <div class="product-price">€179</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pagination -->
+                <div class="pagination">
+                    <button id="prev-btn">Previous</button>
+                    <a href="#" class="page-num active">1</a>
+                    <a href="#" class="page-num">2</a>
+                    <a href="#" class="page-num">3</a>
+                    <button id="next-btn">Next</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3>Linea Jewelry Inc.</h3>
+                <p>Minimalist jewelry crafted for the modern individual</p>
+                <div class="footer-address">
+                    <p><strong>Visit Us</strong></p>
+                    <p>123 Madison Avenue<br>New York, NY 10016</p>
+                </div>
+            </div>
+
+            <div class="footer-section">
+                <h4>Shop</h4>
+                <ul class="footer-links">
+                    <li><a href="shop.html?category=rings">Rings</a></li>
+                    <li><a href="shop.html?category=necklaces">Necklaces</a></li>
+                    <li><a href="shop.html?category=earrings">Earrings</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h4>Support</h4>
+                <ul class="footer-links">
+                    <li><a href="about.html?section=size-guide">Size Guide</a></li>
+                    <li><a href="about.html?section=customer-care">Care</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h4>Connect</h4>
+                <ul class="footer-links">
+                    <li><a href="#">Instagram</a></li>
+                    <li><a href="#">Pinterest</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2024 Linea. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Pagination
+        document.getElementById('next-btn').addEventListener('click', () => {
+            document.querySelectorAll('.page-num').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.page-num')[1].classList.add('active');
+        });
+
+        document.getElementById('prev-btn').addEventListener('click', () => {
+            document.querySelectorAll('.page-num').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.page-num')[0].classList.add('active');
+        });
+
+        // Sort functionality
+        document.getElementById('sort-select').addEventListener('change', (e) => {
+            console.log('Sort by:', e.target.value);
+        });
+
+        // Filter functionality
+        document.querySelectorAll('.filter-item input[type="checkbox"]').forEach(checkbox => {
+            checkbox.addEventListener('change', (e) => {
+                console.log('Filter:', e.target.value);
+            });
+        });
+    </script>
+</body>
+</html>

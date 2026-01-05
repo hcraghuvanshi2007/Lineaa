@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sustainability – Linea</title>
+
+<style>
+:root {
+  --text-main: #1a1a1a;
+  --text-muted: #777;
+  --border: #e6e6e6;
+  --max-width: 1200px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  color: var(--text-main);
+  background: #fff;
+  line-height: 1.7;
+}
+
+/* ================= NAVBAR ================= */
+.navbar {
+  background: #ffffff;
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.navbar-container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 32px;
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.navbar-logo {
+  font-size: 24px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+}
+
+.navbar-menu {
+  display: flex;
+  gap: 40px;
+}
+
+.nav-dropdown {
+  position: relative;
+}
+
+.dropdown-toggle {
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #222;
+  text-decoration: none;
+  padding: 8px 0;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 220px;
+  background: #fff;
+  border: 1px solid var(--border);
+  padding: 12px 0;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition: all 0.25s ease;
+}
+
+.nav-dropdown:hover .dropdown-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.dropdown-item {
+  display: block;
+  padding: 10px 24px;
+  font-size: 14px;
+  color: #555;
+  text-decoration: none;
+}
+
+.dropdown-item:hover {
+  background: #f7f7f7;
+  color: #000;
+}
+
+/* ================= HERO ================= */
+.page-hero {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 120px 24px 80px;
+}
+
+.page-hero h1 {
+  font-size: 48px;
+  font-weight: 400;
+  margin-bottom: 16px;
+}
+
+.page-hero p {
+  font-size: 18px;
+  color: var(--text-muted);
+}
+
+.divider {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin-top: 64px;
+}
+
+/* ================= SECTION ================= */
+.section {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 100px 24px;
+}
+
+.section h2 {
+  font-size: 32px;
+  font-weight: 400;
+  margin-bottom: 48px;
+}
+
+/* ================= TWO COLUMN ================= */
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+}
+
+.block h3 {
+  font-size: 20px;
+  margin-bottom: 16px;
+}
+
+.block p {
+  font-size: 16px;
+  color: var(--text-muted);
+}
+
+/* ================= IMPACT GOALS ================= */
+.impact {
+  background: #fafafa;
+}
+
+.impact-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 80px;
+}
+
+.impact-item h3 {
+  font-size: 32px;
+  font-weight: 400;
+  margin-bottom: 8px;
+}
+
+.impact-item p {
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+/* ================= CERTIFICATIONS ================= */
+.cert-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 48px;
+  margin-top: 48px;
+}
+
+.cert {
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 1024px) {
+  .two-col,
+  .impact-grid,
+  .cert-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .page-hero h1 {
+    font-size: 34px;
+  }
+
+  .section {
+    padding: 72px 20px;
+  }
+}
+.footer {
+  border-top: 1px solid #e6e6e6;
+  margin-top: 120px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+/* TOP AREA */
+.footer-top {
+  padding: 64px 48px;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 48px;
+}
+
+/* BRAND COLUMN */
+.footer-brand h3 {
+  font-size: 30px;
+  margin-bottom: 12px;
+  color: #111;
+}
+
+.tagline {
+  font-size: 14px;
+  color: #777;
+  margin-bottom: 24px;
+}
+
+.footer-block {
+  margin-bottom: 20px;
+}
+
+.footer-block strong {
+  font-size: 14px;
+  display: block;
+  margin-bottom: 6px;
+  color: #111;
+}
+
+.footer-block p {
+  font-size: 14px;
+  color: #555;
+  line-height: 1.6;
+}
+
+/* LINKS */
+.footer-links h4 {
+  font-size: 14px;
+  margin-bottom: 16px;
+  color: #111;
+}
+
+.footer-links a {
+  display: block;
+  font-size: 14px;
+  color: #666;
+  text-decoration: none;
+  margin-bottom: 10px;
+}
+
+.footer-links a:hover {
+  color: #000;
+}
+
+/* BOTTOM BAR */
+.footer-bottom {
+  border-top: 1px solid #e6e6e6;
+  padding: 16px 48px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  color: #666;
+  border-bottom: 1px solid #e6e6e6;
+}
+
+.footer-legal a {
+  margin-left: 24px;
+  color: #666;
+  text-decoration: none;
+}
+
+.footer-legal a:hover {
+  color: #000;
+}
+
+/* RESPONSIVE */
+@media (max-width: 1024px) {
+  .footer-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+  }
+}
+
+@media (max-width: 640px) {
+  .footer-top {
+    padding: 48px 20px;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    gap: 12px;
+    padding: 16px 20px;
+  }
+
+  .footer-legal a {
+    margin-left: 16px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="navbar-container">
+    <div class="navbar-logo">
+      <a href="../index.html" style="text-decoration:none;color:inherit;">LINEA</a>
+    </div>
+
+    <div class="navbar-menu">
+      <div class="nav-dropdown">
+        <a href="../pages/shop.html" class="dropdown-toggle">Shop</a>
+        <div class="dropdown-menu">
+          <a class="dropdown-item" href="#">Rings</a>
+          <a class="dropdown-item" href="#">Necklaces</a>
+          <a class="dropdown-item" href="#">Earrings</a>
+          <a class="dropdown-item" href="#">Bracelets</a>
+        </div>
+      </div>
+
+      <div class="nav-dropdown">
+        <a href="#" class="dropdown-toggle">New In</a>
+        <div class="dropdown-menu">
+            <a href="new-in.html?filter=this-weeks-arrivals" class="dropdown-item">This Week's Arrivals</a>
+            <a href="new-in.html?filter=spring-collection" class="dropdown-item">Spring Collection</a>
+            <a href="new-in.html?filter=featured-designers" class="dropdown-item">Featured Designers</a>
+            <a href="new-in.html?filter=limited-edition" class="dropdown-item">Limited Edition</a>
+            <a href="new-in.html?filter=pre-orders" class="dropdown-item">Pre-Orders</a>
+
+        </div>
+      </div>
+
+      <div class="nav-dropdown">
+        <a href="#" class="dropdown-toggle">About</a>
+        <div class="dropdown-menu">
+          <a class="dropdown-item" href="about-story.html">Our Story</a>
+          <a class="dropdown-item" href="about-sustainability.html">Sustainability</a>
+          <a class="dropdown-item" href="about-size-guide.html">Size Guide</a>
+          <a class="dropdown-item" href="about-customer-care.html">Customer Care</a>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="page-hero">
+  <h1>Sustainability</h1>
+  <p>Creating beautiful jewelry while protecting our planet for future generations</p>
+  <hr class="divider">
+</section>
+
+<!-- ENVIRONMENTAL COMMITMENT -->
+<section class="section">
+  <h2>Our Environmental Commitment</h2>
+
+  <div class="two-col">
+    <div class="block">
+      <h3>Ethical Sourcing</h3>
+      <p>
+        We partner only with suppliers who share our commitment to ethical
+        practices. Every gemstone and precious metal in our collection is
+        sourced responsibly, with full transparency in our supply chain.
+      </p>
+    </div>
+
+    <div class="block">
+      <h3>Recycled Materials</h3>
+      <p>
+        Over 80% of our precious metals come from recycled sources, reducing
+        the environmental impact of mining while maintaining the highest
+        quality standards for our jewelry.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- IMPACT GOALS -->
+<section class="section impact">
+  <h2>Our Impact Goals</h2>
+
+  <div class="impact-grid">
+    <div class="impact-item">
+      <h3>100%</h3>
+      <p>Carbon neutral operations by 2025</p>
+    </div>
+
+    <div class="impact-item">
+      <h3>90%</h3>
+      <p>Recycled packaging materials</p>
+    </div>
+
+    <div class="impact-item">
+      <h3>Zero</h3>
+      <p>Waste to landfill policy</p>
+    </div>
+  </div>
+</section>
+
+<!-- CIRCULAR ECONOMY -->
+<section class="section">
+  <h2>Circular Economy</h2>
+  <p style="max-width:600px;color:var(--text-muted);margin-bottom:48px;">
+    We believe in the power of circular design – creating jewelry that can be
+    treasured, repaired, and eventually recycled into new pieces.
+  </p>
+
+  <div class="two-col">
+    <div class="block">
+      <h3>Lifetime Care</h3>
+      <p>
+        Every piece comes with our lifetime care promise, including professional
+        cleaning, repairs, and resizing services.
+      </p>
+    </div>
+
+    <div class="block">
+      <h3>Take-Back Program</h3>
+      <p>
+        When you're ready for something new, we'll take back your LINEA jewelry
+        to be recycled into future pieces.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- CERTIFICATIONS -->
+<section class="section">
+  <h2>Certifications & Partnerships</h2>
+  <p style="max-width:700px;color:var(--text-muted);">
+    Our commitment to sustainability is verified through partnerships with
+    leading organizations and certifications that hold us accountable to the
+    highest standards.
+  </p>
+
+  <div class="cert-grid">
+    <div class="cert">RJC Certified</div>
+    <div class="cert">B Corp</div>
+    <div class="cert">SCS Certified</div>
+    <div class="cert">Fair Trade</div>
+  </div>
+</section>
+
+<footer class="footer">
+
+  <div class="footer-top">
+    <div class="footer-grid">
+
+      <!-- BRAND -->
+      <div class="footer-brand">
+        <h3>Linea Jewelry Inc.</h3>
+        <p class="tagline">
+          Minimalist jewelry crafted for the modern individual
+        </p>
+
+        <div class="footer-block">
+          <strong>Visit Us</strong>
+          <p>
+            123 Madison Avenue<br>
+            New York, NY 10016
+          </p>
+        </div>
+
+        <div class="footer-block">
+          <strong>Contact</strong>
+          <p>
+            +1 (212) 555-0123<br>
+            hello@lineajewelry.com
+          </p>
+        </div>
+      </div>
+
+      <!-- SHOP -->
+      <div class="footer-links">
+        <h4>Shop</h4>
+        <a href="#">New In</a>
+        <a href="#">Rings</a>
+        <a href="#">Earrings</a>
+        <a href="#">Bracelets</a>
+        <a href="#">Necklaces</a>
+      </div>
+
+      <!-- SUPPORT -->
+      <div class="footer-links">
+        <h4>Support</h4>
+        <a href="#">Size Guide</a>
+        <a href="#">Care Instructions</a>
+        <a href="#">Returns</a>
+        <a href="#">Shipping</a>
+        <a href="#">Contact</a>
+      </div>
+
+      <!-- CONNECT -->
+      <div class="footer-links">
+        <h4>Connect</h4>
+        <a href="#">Instagram</a>
+        <a href="#">Pinterest</a>
+        <a href="#">Newsletter</a>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- BOTTOM BAR -->
+  <div class="footer-bottom">
+    <p>© 2024 Linea. All rights reserved.</p>
+
+    <div class="footer-legal">
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms of Service</a>
+    </div>
+  </div>
+
+</footer>
+
+</body>
+</html>

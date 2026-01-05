@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New In - LINEA Jewelry</title>
+    <link rel="stylesheet" href="../css/variables.css">
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/responsive.css">
+    <link rel="stylesheet" href="../css/dropdown.css">
+    <style>
+        /* ================= NAVBAR ================= */
+        .navbar {
+            background: #ffffff;
+            border-bottom: 1px solid #e6e6e6;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .navbar-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 32px;
+            height: 72px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .navbar-logo {
+            font-size: 24px;
+            font-weight: 500;
+            letter-spacing: 0.08em;
+        }
+
+        .navbar-menu {
+            display: flex;
+            gap: 40px;
+        }
+
+        .nav-dropdown {
+            position: relative;
+        }
+
+        .dropdown-toggle {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #222;
+            text-decoration: none;
+            padding: 8px 0;
+        }
+
+        .dropdown-toggle.active {
+            color: var(--color-primary);
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            min-width: 220px;
+            background: #fff;
+            border: 1px solid #e6e6e6;
+            padding: 12px 0;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            margin-top: 8px;
+        }
+
+        .nav-dropdown:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .dropdown-item {
+            display: block;
+            padding: 10px 20px;
+            font-size: 14px;
+            color: #666;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .dropdown-item:hover {
+            background: #f5f5f5;
+            color: var(--color-primary);
+        }
+
+        .navbar-icons {
+            display: flex;
+            gap: 24px;
+        }
+
+        .icon-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #222;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: color 0.3s ease;
+        }
+
+        .icon-btn:hover {
+            color: var(--color-primary);
+        }
+
+        /* New In Page Specific Styles */
+        .new-in-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .new-in-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .breadcrumb {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            justify-content: center;
+        }
+
+        .breadcrumb a {
+            color: var(--color-primary);
+            text-decoration: none;
+        }
+
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+
+        .breadcrumb span {
+            color: var(--color-text-secondary);
+        }
+
+        .new-in-header h1 {
+            font-size: 48px;
+            color: var(--color-text);
+            margin-bottom: 15px;
+        }
+
+        .new-in-header p {
+            color: var(--color-text-secondary);
+            font-size: 18px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Collection Highlight */
+        .collection-highlight {
+            background: linear-gradient(135deg, var(--color-secondary) 0%, rgba(33, 128, 141, 0.05) 100%);
+            padding: 60px 40px;
+            border-radius: 12px;
+            margin-bottom: 50px;
+            text-align: center;
+        }
+
+        .collection-highlight h2 {
+            font-size: 32px;
+            color: var(--color-text);
+            margin-bottom: 20px;
+        }
+
+        .collection-highlight p {
+            color: var(--color-text-secondary);
+            font-size: 16px;
+            line-height: 1.6;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* Main Layout */
+        .new-in-layout {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 40px;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .filter-group h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--color-text);
+        }
+
+        .filter-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+            gap: 10px;
+        }
+
+        .filter-item input[type="checkbox"],
+        .filter-item input[type="radio"] {
+            cursor: pointer;
+            width: 18px;
+            height: 18px;
+        }
+
+        .filter-item label {
+            cursor: pointer;
+            font-size: 14px;
+            color: var(--color-text-secondary);
+            flex: 1;
+        }
+
+        /* Main Content */
+        .new-in-content {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        /* Controls Bar */
+        .controls-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            padding: 20px;
+            background: var(--color-secondary);
+            border-radius: 8px;
+        }
+
+        .results-count {
+            font-size: 14px;
+            color: var(--color-text-secondary);
+        }
+
+        .sort-dropdown {
+            padding: 8px 12px;
+            border: 1px solid var(--color-border);
+            border-radius: 6px;
+            background: var(--color-surface);
+            color: var(--color-text);
+            cursor: pointer;
+        }
+
+        /* Product Grid */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .product-card {
+            background: var(--color-surface);
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--color-border);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 300px;
+            overflow: hidden;
+            background: var(--color-background);
+            position: relative;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .product-card:hover .product-image img {
+            transform: scale(1.05);
+        }
+
+        /* Product Badge */
+        .product-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: var(--color-primary);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            z-index: 10;
+        }
+
+        .product-badge.coming-soon {
+            background: var(--color-orange-500);
+        }
+
+        .product-badge.exclusive {
+            background: var(--color-text);
+        }
+
+        .product-info {
+            padding: 20px;
+        }
+
+        .product-category {
+            font-size: 12px;
+            color: var(--color-text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .product-name {
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--color-text);
+            margin-bottom: 8px;
+        }
+
+        .product-price {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--color-primary);
+        }
+
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+
+        .pagination button,
+        .pagination a {
+            padding: 10px 15px;
+            border: 1px solid var(--color-border);
+            background: var(--color-surface);
+            color: var(--color-text);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+
+        .pagination button:hover,
+        .pagination a:hover {
+            background: var(--color-primary);
+            color: white;
+            border-color: var(--color-primary);
+        }
+
+        .pagination .active {
+            background: var(--color-primary);
+            color: white;
+            border-color: var(--color-primary);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .product-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 20px;
+            }
+
+            .new-in-layout {
+                grid-template-columns: 200px 1fr;
+                gap: 20px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .new-in-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                display: none;
+            }
+
+            .product-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .controls-bar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .sort-dropdown {
+                width: 100%;
+            }
+
+            .new-in-header h1 {
+                font-size: 28px;
+            }
+
+            .collection-highlight {
+                padding: 40px 20px;
+            }
+        }
+        .footer {
+  border-top: 1px solid #e6e6e6;
+  margin-top: 120px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+/* TOP AREA */
+.footer-top {
+  padding: 64px 48px;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 48px;
+}
+
+/* BRAND COLUMN */
+.footer-brand h3 {
+  font-size: 30px;
+  margin-bottom: 12px;
+  color: #111;
+}
+
+.tagline {
+  font-size: 14px;
+  color: #777;
+  margin-bottom: 24px;
+}
+
+.footer-block {
+  margin-bottom: 20px;
+}
+
+.footer-block strong {
+  font-size: 14px;
+  display: block;
+  margin-bottom: 6px;
+  color: #111;
+}
+
+.footer-block p {
+  font-size: 14px;
+  color: #555;
+  line-height: 1.6;
+}
+
+/* LINKS */
+.footer-links h4 {
+  font-size: 14px;
+  margin-bottom: 16px;
+  color: #111;
+}
+
+.footer-links a {
+  display: block;
+  font-size: 14px;
+  color: #666;
+  text-decoration: none;
+  margin-bottom: 10px;
+}
+
+.footer-links a:hover {
+  color: #000;
+}
+
+/* BOTTOM BAR */
+.footer-bottom {
+  border-top: 1px solid #e6e6e6;
+  padding: 16px 48px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  color: #666;
+  border-bottom: 1px solid #e6e6e6;
+}
+
+.footer-legal a {
+  margin-left: 24px;
+  color: #666;
+  text-decoration: none;
+}
+
+.footer-legal a:hover {
+  color: #000;
+}
+
+/* RESPONSIVE */
+@media (max-width: 1024px) {
+  .footer-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+  }
+}
+
+@media (max-width: 640px) {
+  .footer-top {
+    padding: 48px 20px;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    gap: 12px;
+    padding: 16px 20px;
+  }
+
+  .footer-legal a {
+    margin-left: 16px;
+  }
+}
+    </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="navbar-container">
+    <div class="navbar-logo">
+      <a href="../index.html" style="text-decoration:none;color:inherit;">LINEA</a>
+    </div>
+
+    <div class="navbar-menu">
+      <div class="nav-dropdown">
+        <a href="../pages/shop.html" class="dropdown-toggle">Shop</a>
+        <div class="dropdown-menu">
+          <a class="dropdown-item" href="shop.html?category=rings">Rings</a>
+          <a class="dropdown-item" href="shop.html?category=necklaces">Necklaces</a>
+          <a class="dropdown-item" href="shop.html?category=earrings">Earrings</a>
+          <a class="dropdown-item" href="shop.html?category=bracelets">Bracelets</a>
+        </div>
+      </div>
+
+      <div class="nav-dropdown">
+        <a href="#" class="dropdown-toggle">New In</a>
+        <div class="dropdown-menu">
+            <a href="new-in.html?filter=this-weeks-arrivals" class="dropdown-item">This Week's Arrivals</a>
+            <a href="new-in.html?filter=spring-collection" class="dropdown-item">Spring Collection</a>
+            <a href="new-in.html?filter=featured-designers" class="dropdown-item">Featured Designers</a>
+            <a href="new-in.html?filter=limited-edition" class="dropdown-item">Limited Edition</a>
+            <a href="new-in.html?filter=pre-orders" class="dropdown-item">Pre-Orders</a>
+
+        </div>
+      </div>
+
+      <div class="nav-dropdown">
+        <a href="#" class="dropdown-toggle">About</a>
+        <div class="dropdown-menu">
+          <a class="dropdown-item" href="about-story.html">Our Story</a>
+          <a class="dropdown-item" href="about-sustainability.html">Sustainability</a>
+          <a class="dropdown-item" href="about-size-guide.html">Size Guide</a>
+          <a class="dropdown-item" href="about-customer-care.html">Customer Care</a>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+
+    <!-- Main Content -->
+    <main class="new-in-container">
+        <!-- Page Header -->
+        <div class="new-in-header">
+            <div class="breadcrumb">
+                <a href="../index.html">Home</a>
+                <span>›</span>
+                <span>New In</span>
+            </div>
+            <h1>New Collections</h1>
+            <p id="filter-description">Discover our latest arrivals and exclusive collections</p>
+        </div>
+
+        <!-- Collection Highlight -->
+        <div class="collection-highlight" id="collection-highlight">
+            <h2 id="highlight-title">Latest Arrivals</h2>
+            <p id="highlight-desc">Fresh designs added weekly. Be the first to discover our newest pieces.</p>
+        </div>
+
+        <!-- New In Layout -->
+        <div class="new-in-layout">
+            <!-- Sidebar Filters -->
+            <aside class="sidebar">
+                <div class="filter-group">
+                    <h3>Collections</h3>
+                    <div class="filter-item">
+                        <input type="radio" id="this-week" name="collection" value="this-weeks-arrivals">
+                        <label for="this-week">This Week's Arrivals</label>
+                    </div>
+                    <div class="filter-item">
+                        <input type="radio" id="spring" name="collection" value="spring-collection">
+                        <label for="spring">Spring Collection</label>
+                    </div>
+                    <div class="filter-item">
+                        <input type="radio" id="featured" name="collection" value="featured-designers">
+                        <label for="featured">Featured Designers</label>
+                    </div>
+                    <div class="filter-item">
+                        <input type="radio" id="limited" name="collection" value="limited-edition">
+                        <label for="limited">Limited Edition</label>
+                    </div>
+                    <div class="filter-item">
+                        <input type="radio" id="preorder" name="collection" value="pre-orders">
+                        <label for="preorder">Pre-Orders</label>
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <h3>Availability</h3>
+                    <div class="filter-item">
+                        <input type="checkbox" id="all" value="all">
+                        <label for="all">All</label>
+                    </div>
+                    <div class="filter-item">
+                        <input type="checkbox" id="in-stock" value="in-stock">
+                        <label for="in-stock">In Stock</label>
+                    </div>
+                    <div class="filter-item">
+                        <input type="checkbox" id="pre-order" value="pre-order">
+                        <label for="pre-order">Pre-Order</label>
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <h3>Price Range</h3>
+                    <div class="filter-item">
+                        <input type="checkbox" id="price1" value="0-500">
+                        <label for="price1">Under $500</label>
+                    </div>
+                    <div class="filter-item">
+                        <input type="checkbox" id="price2" value="500-1000">
+                        <label for="price2">$500 - $1,000</label>
+                    </div>
+                    <div class="filter-item">
+                        <input type="checkbox" id="price3" value="1000-5000">
+                        <label for="price3">$1,000 - $5,000</label>
+                    </div>
+                    <div class="filter-item">
+                        <input type="checkbox" id="price4" value="5000+">
+                        <label for="price4">$5,000+</label>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Main Content -->
+            <div class="new-in-content">
+                <!-- Controls Bar -->
+                <div class="controls-bar">
+                    <span class="results-count">Showing <strong id="result-count">6</strong> products</span>
+                    <select class="sort-dropdown" id="sort-select">
+                        <option value="newest">Newest</option>
+                        <option value="featured">Featured</option>
+                        <option value="price-asc">Price: Low to High</option>
+                        <option value="price-desc">Price: High to Low</option>
+                        <option value="popular">Most Popular</option>
+                    </select>
+                </div>
+
+                <!-- Product Grid -->
+                <div class="product-grid" id="product-grid">
+                    <!-- New Arrival Products -->
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="..\assets\images\pantheon-ChbEbbTu.jpg" alt="Contemporary Ring">
+                            <span class="product-badge">NEW</span>
+                        </div>
+                        <div class="product-info">
+                            <div class="product-category">Earring</div>
+                            <div class="product-name">Pantheon</div>
+                            <div class="product-price">$349</div>
+                        </div>
+                    </div>
+
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="..\assets\images\eclipse-ErA5xE4T.jpg" alt="Gold Pendant">
+                            <span class="product-badge exclusive">EXCLUSIVE</span>
+                        </div>
+                        <div class="product-info">
+                            <div class="product-category">Bracelets</div>
+                            <div class="product-name">Eclipse</div>
+                            <div class="product-price">$599</div>
+                        </div>
+                    </div>
+
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="..\assets\images\halo-CMlMG7vQ.jpg" alt="Diamond Earrings">
+                            <span class="product-badge coming-soon">COMING SOON</span>
+                        </div>
+                        <div class="product-info">
+                            <div class="product-category">Earrings</div>
+                            <div class="product-name">Halo</div>
+                            <div class="product-price">$170</div>
+                        </div>
+                    </div>
+
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="..\assets\images\lintel-CG5vNX3U.jpg" alt="Silver Bracelet">
+                            <span class="product-badge">NEW</span>
+                        </div>
+                        <div class="product-info">
+                            <div class="product-category">Earrings</div>
+                            <div class="product-name">Lintel</div>
+                            <div class="product-price">$300</div>
+                        </div>
+                    </div>
+
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="..\assets\images\shadowline-DPSA61jB.jpg" alt="Designer Ring">
+                            <span class="product-badge exclusive">EXCLUSIVE</span>
+                        </div>
+                        <div class="product-info">
+                            <div class="product-category">Bracelet</div>
+                            <div class="product-name">Shadow line</div>
+                            <div class="product-price">$700</div>
+                        </div>
+                    </div>
+
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="../assets/images/oblique-BrLAWbgb.jpg" alt="Pearl Collection">
+                            <span class="product-badge coming-soon">COMING SOON</span>
+                        </div>
+                        <div class="product-info">
+                            <div class="product-category">Earring</div>
+                            <div class="product-name">Oblique</div>
+                            <div class="product-price">$178</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pagination -->
+                <div class="pagination">
+                    <button id="prev-btn">Previous</button>
+                    <a href="#" class="page-num ">1</a>
+                    <a href="#" class="page-num">2</a>
+                    <a href="#" class="page-num">3</a>
+                    <button id="next-btn">Next</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+<footer class="footer">
+
+  <div class="footer-top">
+    <div class="footer-grid">
+
+      <!-- BRAND -->
+      <div class="footer-brand">
+        <h3>Linea Jewelry Inc.</h3>
+        <p class="tagline">
+          Minimalist jewelry crafted for the modern individual
+        </p>
+
+        <div class="footer-block">
+          <strong>Visit Us</strong>
+          <p>
+            123 Madison Avenue<br>
+            New York, NY 10016
+          </p>
+        </div>
+
+        <div class="footer-block">
+          <strong>Contact</strong>
+          <p>
+            +1 (212) 555-0123<br>
+            hello@lineajewelry.com
+          </p>
+        </div>
+      </div>
+
+      <!-- SHOP -->
+      <div class="footer-links">
+        <h4>Shop</h4>
+        <a href="#">New In</a>
+        <a href="#">Rings</a>
+        <a href="#">Earrings</a>
+        <a href="#">Bracelets</a>
+        <a href="#">Necklaces</a>
+      </div>
+
+      <!-- SUPPORT -->
+      <div class="footer-links">
+        <h4>Support</h4>
+        <a href="#">Size Guide</a>
+        <a href="#">Care Instructions</a>
+        <a href="#">Returns</a>
+        <a href="#">Shipping</a>
+        <a href="#">Contact</a>
+      </div>
+
+      <!-- CONNECT -->
+      <div class="footer-links">
+        <h4>Connect</h4>
+        <a href="#">Instagram</a>
+        <a href="#">Pinterest</a>
+        <a href="#">Newsletter</a>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- BOTTOM BAR -->
+  <div class="footer-bottom">
+    <p>© 2024 Linea. All rights reserved.</p>
+
+    <div class="footer-legal">
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms of Service</a>
+    </div>
+  </div>
+
+</footer>
+
+    <script src="../js/dropdown.js"></script>
+    <script>
+        // Update page based on filter parameter
+        window.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            const filter = params.get('filter');
+            
+            if (filter) {
+                const filterTitles = {
+                    'this-weeks-arrivals': 'This Week\'s Arrivals',
+                    'spring-collection': 'Spring Collection',
+                    'featured-designers': 'Featured Designers',
+                    'limited-edition': 'Limited Edition',
+                    'pre-orders': 'Pre-Orders'
+                };
+                
+                const descriptions = {
+                    'this-weeks-arrivals': 'Fresh designs added this week. Discover what\'s new and trending.',
+                    'spring-collection': 'Celebrate the season with our fresh spring designs.',
+                    'featured-designers': 'Handpicked collections from our featured designers.',
+                    'limited-edition': 'Exclusive pieces available in limited quantities.',
+                    'pre-orders': 'Reserve upcoming designs before official release.'
+                };
+                
+                document.getElementById('highlight-title').textContent = filterTitles[filter] || 'New Collections';
+                document.getElementById('highlight-desc').textContent = descriptions[filter] || 'Discover our latest arrivals';
+            }
+        });
+
+        // Pagination
+        document.getElementById('next-btn').addEventListener('click', () => {
+            document.querySelectorAll('.page-num').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.page-num')[1].classList.add('active');
+        });
+
+        document.getElementById('prev-btn').addEventListener('click', () => {
+            document.querySelectorAll('.page-num').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.page-num')[0].classList.add('active');
+        });
+    </script>
+</body>
+</html>

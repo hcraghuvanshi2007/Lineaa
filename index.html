@@ -1,0 +1,1415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LINEA - Minimalist Jewelry</title>
+    <style>
+        /* ROOT VARIABLES */
+        :root {
+            --color-primary: #218080;
+            --color-primary-hover: #1a7472;
+            --color-primary-active: #1a6873;
+            --color-text: #133435;
+            --color-text-secondary: #626C7C;
+            --color-surface: #FFFDF9;
+            --color-background: #FCFCF9;
+            --color-border: #E0D8CE;
+            --color-secondary: rgba(33, 128, 141, 0.12);
+            --color-secondary-hover: rgba(33, 128, 141, 0.2);
+            --color-orange-500: #A84B2F;
+            --collections-edge: 48px; /* spacing from viewport edges */
+            --collections-gap: 36px; /* increased space between columns */
+            --collections-space: var(--collections-edge); /* legacy alias */
+        }
+
+        /* GLOBAL STYLES */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            font-size: 16px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.5;
+            color: var(--color-text);
+            background-color: var(--color-background);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        /* NAVBAR STYLES */
+        .navbar {
+            background-color: var(--color-surface);
+            border-bottom: 1px solid var(--color-border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+        }
+
+        .navbar-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 70px;
+        }
+
+        .navbar-logo {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--color-text);
+        }
+
+        .navbar-menu {
+            display: flex;
+            gap: 30px;
+            flex: 1;
+            margin-left: 50px;
+        }
+
+        .nav-dropdown {
+            position: relative;
+        }
+
+        .dropdown-toggle {
+            color: var(--color-text);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+        }
+
+        .dropdown-toggle::after {
+            content: '▼';
+            font-size: 10px;
+            color: var(--color-text-secondary);
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            min-width: 200px;
+            padding: 10px 0;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            margin-top: 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .nav-dropdown:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            margin-top: 5px;
+        }
+
+        .dropdown-item {
+            display: block;
+            padding: 10px 20px;
+            color: var(--color-text);
+            text-decoration: none;
+            font-size: 14px;
+            transition: background-color 0.2s ease;
+        }
+
+        .dropdown-item:hover {
+            background-color: var(--color-secondary);
+        }
+
+        .navbar-icons {
+            display: flex;
+            gap: 20px;
+        }
+
+        .icon-btn {
+            background: none;
+            border: none;
+            color: var(--color-text);
+            cursor: pointer;
+            font-size: 20px;
+            padding: 5px;
+            transition: color 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .icon-btn:hover {
+            color: var(--color-primary);
+        }
+
+        /* SIDE PANEL STYLES */
+        .side-panel {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 100%;
+            max-width: 450px;
+            height: 100vh;
+            background: var(--color-surface);
+            border-left: 1px solid var(--color-border);
+            z-index: 1000;
+            transition: right 0.3s ease;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .side-panel.active {
+            right: 0;
+        }
+
+        /* Panel Header */
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            border-bottom: 1px solid var(--color-border);
+            position: sticky;
+            top: 0;
+            background: var(--color-surface);
+            z-index: 10;
+        }
+
+        .panel-header h2 {
+            font-size: 18px;
+            margin: 0;
+            color: var(--color-text);
+        }
+
+        .panel-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--color-text);
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: color 0.3s ease;
+        }
+
+        .panel-close:hover {
+            color: var(--color-primary);
+        }
+
+        /* Panel Content */
+        .panel-content {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        /* Search Panel */
+        .search-input-wrapper {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .search-input-wrapper input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--color-border);
+            border-radius: 6px;
+            font-size: 14px;
+            background: var(--color-background);
+        }
+
+        .search-input-wrapper input:focus {
+            outline: none;
+            border-color: var(--color-primary);
+            background: var(--color-surface);
+        }
+
+        .popular-searches {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .search-tag {
+            background: var(--color-secondary);
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+        }
+
+        .search-tag:hover {
+            background: var(--color-primary);
+            color: white;
+        }
+
+        /* Cart Panel */
+        .cart-item {
+            display: flex;
+            gap: 15px;
+            padding: 15px 0;
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .cart-item-image {
+            width: 80px;
+            height: 80px;
+            background: var(--color-secondary);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .cart-item-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .cart-item-details {
+            flex: 1;
+        }
+
+        .cart-item-name {
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+
+        .cart-item-price {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--color-primary);
+            margin-bottom: 8px;
+        }
+
+        .cart-item-quantity {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            font-size: 12px;
+        }
+
+        .qty-btn {
+            width: 24px;
+            height: 24px;
+            border: 1px solid var(--color-border);
+            background: transparent;
+            cursor: pointer;
+            border-radius: 3px;
+            font-size: 12px;
+            transition: all 0.2s ease;
+        }
+
+        .qty-btn:hover {
+            background: var(--color-secondary);
+        }
+
+        .cart-empty {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--color-text-secondary);
+        }
+
+        .cart-summary {
+            padding: 20px;
+            border-top: 1px solid var(--color-border);
+            margin-top: auto;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .summary-row.total {
+            font-size: 18px;
+            font-weight: 600;
+            padding-top: 10px;
+            border-top: 1px solid var(--color-border);
+            margin-top: 10px;
+        }
+
+        /* Account Panel */
+        .account-tabs {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--color-border);
+            padding-bottom: 15px;
+        }
+
+        .account-tab {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--color-text-secondary);
+            padding: 0;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .account-tab.active {
+            color: var(--color-text);
+        }
+
+        .account-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--color-primary);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 12px;
+            font-weight: 500;
+            margin-bottom: 6px;
+            color: var(--color-text);
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--color-border);
+            border-radius: 6px;
+            font-size: 14px;
+            background: var(--color-background);
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--color-primary);
+            background: var(--color-surface);
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 12px;
+            background: var(--color-text);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        .login-btn:hover {
+            background: var(--color-primary);
+        }
+
+        .signup-link {
+            text-align: center;
+            font-size: 12px;
+            margin-top: 10px;
+        }
+
+        .signup-link a {
+            color: var(--color-primary);
+            text-decoration: none;
+        }
+
+        /* Wishlist Panel */
+        .wishlist-item {
+            display: flex;
+            gap: 15px;
+            padding: 15px 0;
+            border-bottom: 1px solid var(--color-border);
+            align-items: center;
+        }
+
+        .wishlist-item-image {
+            width: 70px;
+            height: 70px;
+            background: var(--color-secondary);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .wishlist-item-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .wishlist-item-details {
+            flex: 1;
+        }
+
+        .wishlist-item-name {
+            font-size: 13px;
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+
+        .wishlist-item-price {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--color-primary);
+        }
+
+        .wishlist-empty {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--color-text-secondary);
+        }
+
+        /* Remove button */
+        .remove-btn {
+            background: none;
+            border: none;
+            color: var(--color-text-secondary);
+            cursor: pointer;
+            font-size: 18px;
+            transition: color 0.3s ease;
+        }
+
+        .remove-btn:hover {
+            color: var(--color-primary);
+        }
+
+        /* Overlay */
+        .panel-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .panel-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, rgba(33, 128, 141, 0.12) 0%, rgba(33, 128, 141, 0.05) 100%);
+            padding: 100px 20px;
+            text-align: center;
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 15px;
+            color: var(--color-text);
+        }
+
+        .hero p {
+            font-size: 18px;
+            color: var(--color-text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .collections {
+  margin-top: 48px;
+}
+
+/* GRID FOR FIRST TWO IMAGES */
+.collections-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+  margin-left: 30px;
+  margin-right: 30px;
+  padding: 0 var(--edge);
+}
+
+/* COLLECTION CARD */
+.collection-item {
+  width: 100%;
+}
+
+.collection-image {
+  width: 100%;
+  height: calc(100vh - 140px);
+  overflow: hidden;
+  border-radius: 2px;
+}
+
+.collection-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.4s ease;
+}
+
+.collection-image:hover img {
+  transform: scale(1.03);
+}
+
+.collection-caption {
+  margin-top: 16px;
+}
+
+.collection-title {
+  font-size: 18px;
+  font-weight: 600;
+  text-decoration: none;
+  color: var(--text);
+}
+
+.collection-sub {
+  font-size: 14px;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+.product-section {
+  padding: 80px 48px;
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+}
+
+/* CARD */
+.product-card {
+  cursor: pointer;
+}
+
+/* IMAGE AREA */
+.product-image {
+  position: relative;
+  background: #f7f7f7;
+  aspect-ratio: 1 / 1.1;
+  overflow: hidden;
+}
+
+/* IMAGE STACK */
+.product-image img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: opacity 0.4s ease, transform 0.5s ease;
+}
+
+/* MAIN IMAGE */
+.img-main {
+  opacity: 1;
+  z-index: 1;
+}
+
+/* HOVER IMAGE */
+.img-hover {
+  opacity: 0;
+  z-index: 2;
+}
+
+/* HOVER EFFECT */
+.product-card:hover .img-main {
+  opacity: 0;
+}
+
+.product-card:hover .img-hover {
+  opacity: 1;
+  transform: scale(1.03);
+}
+
+/* NEW BADGE */
+.badge {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  color: #111;
+  z-index: 3;
+}
+
+/* INFO */
+.product-info {
+  margin-top: 16px;
+}
+
+.category {
+  font-size: 14px;
+  color: #777;
+  margin-bottom: 6px;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.info-row h3 {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.info-row span {
+  font-size: 15px;
+  color: #444;
+}
+
+/* RESPONSIVE */
+@media (max-width: 1024px) {
+  .product-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .product-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .product-section {
+    padding: 48px 20px;
+  }
+}
+
+
+/* ================= WIDE THUMBNAIL ================= */
+.collections-thumbnail {
+  padding: 30px;
+  margin-top: 48px;
+  max-width: 1450px;
+}
+
+.collections-thumbnail img {
+  width: 110%;
+  height: auto;
+  display: block;
+  border-radius: 0px;
+  object-fit: cover;
+}
+
+/* ================= SECOND THUMBNAIL SIZING & HOVER ================= */
+#second-thumbnail .collection-image {
+  width: 110%;
+  height: auto;
+  overflow: hidden;
+  border-radius: 0px;
+}
+
+#second-thumbnail .collection-image img {
+  width: 100%;
+  height: auto;
+  transition: transform 0.4s ease;
+}
+
+#second-thumbnail .collection-image:hover img {
+  transform: scale(1.03);
+}
+
+/* ================= FOOTER ================= */
+.footer {
+  margin-top: 80px;
+  padding: 48px 24px;
+  
+  color: #fff;
+  text-align: center;
+}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 1024px) {
+  .collection-image {
+    height: 80vh;
+  }
+}
+
+@media (max-width: 768px) {
+  .collections-grid {
+    grid-template-columns: 1fr;
+    padding: 0 20px;
+  }
+
+  .collection-image {
+    height: auto;
+    aspect-ratio: 4 / 5;
+  }
+
+  .collections-thumbnail {
+    padding: 0 20px;
+  }
+
+  .hero h1 {
+    font-size: 32px;
+  }
+}
+
+.footer {
+  border-top: 1px solid #e6e6e6;
+  margin-top: 120px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+/* TOP AREA */
+.footer-top {
+  padding: 64px 48px;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 48px;
+}
+
+/* BRAND COLUMN */
+.footer-brand h3 {
+  font-size: 30px;
+  margin-bottom: 12px;
+  color: #111;
+}
+
+.tagline {
+  font-size: 14px;
+  color: #777;
+  margin-bottom: 24px;
+}
+
+.footer-block {
+  margin-bottom: 20px;
+}
+
+.footer-block strong {
+  font-size: 14px;
+  display: block;
+  margin-bottom: 6px;
+  color: #111;
+}
+
+.footer-block p {
+  font-size: 14px;
+  color: #555;
+  line-height: 1.6;
+}
+
+/* LINKS */
+.footer-links h4 {
+  font-size: 14px;
+  margin-bottom: 16px;
+  color: #111;
+}
+
+.footer-links a {
+  display: block;
+  font-size: 14px;
+  color: #666;
+  text-decoration: none;
+  margin-bottom: 10px;
+}
+
+.footer-links a:hover {
+  color: #000;
+}
+
+/* BOTTOM BAR */
+.footer-bottom {
+  border-top: 1px solid #e6e6e6;
+  padding: 16px 48px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  color: #666;
+  border-bottom: 1px solid #e6e6e6;
+}
+
+.footer-legal a {
+  margin-left: 24px;
+  color: #666;
+  text-decoration: none;
+}
+
+.footer-legal a:hover {
+  color: #000;
+}
+
+/* RESPONSIVE */
+@media (max-width: 1024px) {
+  .footer-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+  }
+}
+
+@media (max-width: 640px) {
+  .footer-top {
+    padding: 48px 20px;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    gap: 12px;
+    padding: 16px 20px;
+  }
+
+  .footer-legal a {
+    margin-left: 16px;
+  }
+}
+
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .navbar-menu {
+                display: none;
+            }
+
+            .side-panel {
+                max-width: 100%;
+            }
+
+            .hero h1 {
+                font-size: 32px;
+            }
+
+            .collections-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .navbar-container {
+                height: 60px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <div class="navbar-logo">
+                <a href="index.html" style="text-decoration: none; color: inherit;">
+                    LINEA
+                </a>
+            </div>
+            
+            <div class="navbar-menu">
+                <div class="nav-dropdown">
+                    <a href="pages/shop.html" class="dropdown-toggle">Shop</a>
+                    <div class="dropdown-menu">
+                        <a href="pages/shop.html?category=rings" class="dropdown-item">Rings</a>
+                        <a href="pages/shop.html?category=necklaces" class="dropdown-item">Necklaces</a>
+                        <a href="pages/shop.html?category=earrings" class="dropdown-item">Earrings</a>
+                        <a href="pages/shop.html?category=bracelets" class="dropdown-item">Bracelets</a>
+                        <a href="pages/shop.html?category=watches" class="dropdown-item">Watches</a>
+                    </div>
+                </div>
+                
+                <div class="nav-dropdown">
+                    <a href="pages/new-in.html" class="dropdown-toggle">New In</a>
+                    <div class="dropdown-menu">
+                        <a href="pages/new-in.html?filter=this-weeks-arrivals" class="dropdown-item">This Week's Arrivals</a>
+                        <a href="pages/new-in.html?filter=spring-collection" class="dropdown-item">Spring Collection</a>
+                        <a href="pages/new-in.html?filter=featured-designers" class="dropdown-item">Featured Designers</a>
+                        <a href="pages/new-in.html?filter=limited-edition" class="dropdown-item">Limited Edition</a>
+                        <a href="pages/new-in.html?filter=pre-orders" class="dropdown-item">Pre-Orders</a>
+                    </div>
+                </div>
+                
+                <div class="nav-dropdown">
+                    <a href="pages/about.html" class="dropdown-toggle">About</a>
+                    <div class="dropdown-menu">
+                        <a href="pages/about-story.html" class="dropdown-item">Our Story</a>
+                        <a href="pages/about-sustainability.html" class="dropdown-item">Sustainability</a>
+                        <a href="pages/about-size-guide.html" class="dropdown-item">Size Guide</a>
+                        <a href="pages/about-customer-care.html" class="dropdown-item">Customer Care</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="navbar-icons">
+                <button class="icon-btn" aria-label="Search" id="search-btn">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <path d="m21 21-4.35-4.35"></path>
+                    </svg>
+                </button>
+                <button class="icon-btn" aria-label="User Account" id="account-btn">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                </button>
+                <button class="icon-btn" aria-label="Wishlist" id="wishlist-btn">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                    </svg>
+                </button>
+                <button class="icon-btn" aria-label="Shopping Cart" id="cart-btn">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="9" cy="21" r="1"></circle>
+                        <circle cx="20" cy="21" r="1"></circle>
+                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Panel Overlay -->
+    <div class="panel-overlay" id="panel-overlay"></div>
+
+    <!-- Search Panel -->
+    <div class="side-panel" id="search-panel">
+        <div class="panel-header">
+            <h2>Search</h2>
+            <button class="panel-close" onclick="closePanel('search')">✕</button>
+        </div>
+        <div class="panel-content">
+            <div class="search-input-wrapper">
+                <input type="text" placeholder="Search for jewelry..." id="search-input">
+            </div>
+            <div style="margin-bottom: 20px;">
+                <h3 style="font-size: 12px; font-weight: 600; margin-bottom: 15px; color: var(--color-text);">Popular Searches</h3>
+                <div class="popular-searches">
+                    <button class="search-tag">Gold Rings</button>
+                    <button class="search-tag">Silver Necklaces</button>
+                    <button class="search-tag">Pearl Earrings</button>
+                    <button class="search-tag">Designer Bracelets</button>
+                    <button class="search-tag">Wedding Rings</button>
+                    <button class="search-tag">Vintage Collection</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Account Panel -->
+    <div class="side-panel" id="account-panel">
+        <div class="panel-header">
+            <h2>My Account</h2>
+            <button class="panel-close" onclick="closePanel('account')">✕</button>
+        </div>
+        <div class="panel-content">
+            <div class="account-tabs">
+                <button class="account-tab active" data-tab="login">Login</button>
+                <button class="account-tab" data-tab="signup">Sign Up</button>
+            </div>
+
+            <!-- Login Tab -->
+            <div class="tab-content active" id="login-tab">
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email" placeholder="your@email.com">
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" placeholder="••••••••">
+                </div>
+                <button class="login-btn">Login</button>
+                <div class="signup-link">
+                    <a href="#">Forgot password?</a>
+                </div>
+            </div>
+
+            <!-- Signup Tab -->
+            <div class="tab-content" id="signup-tab">
+                <div class="form-group">
+                    <label>First Name</label>
+                    <input type="text" placeholder="John">
+                </div>
+                <div class="form-group">
+                    <label>Last Name</label>
+                    <input type="text" placeholder="Doe">
+                </div>
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email" placeholder="your@email.com">
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" placeholder="••••••••">
+                </div>
+                <button class="login-btn">Create Account</button>
+                <div class="signup-link">
+                    By signing up, you agree to our <a href="#">Terms</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Wishlist Panel -->
+    <div class="side-panel" id="wishlist-panel">
+        <div class="panel-header">
+            <h2>Your Favorites</h2>
+            <button class="panel-close" onclick="closePanel('wishlist')">✕</button>
+        </div>
+        <div class="panel-content">
+            <div id="wishlist-items"></div>
+            <div class="wishlist-empty">
+                <p>You haven't added any favorites yet. Browse our collection and click the heart icon to save items you love.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cart Panel -->
+    <div class="side-panel" id="cart-panel">
+        <div class="panel-header">
+            <h2>Shopping Bag</h2>
+            <button class="panel-close" onclick="closePanel('cart')">✕</button>
+        </div>
+        <div class="panel-content">
+            <div id="cart-items"></div>
+            <div class="cart-empty" id="cart-empty-msg">
+                <p>Your bag is empty. Browse our collection and add items you love.</p>
+            </div>
+        </div>
+        <div class="cart-summary">
+            <div class="summary-row">
+                <span>Subtotal</span>
+                <span id="subtotal">€0.00</span>
+            </div>
+            <div class="summary-row">
+                <span>Shipping</span>
+                <span id="shipping">TBD</span>
+            </div>
+            <div class="summary-row total">
+                <span>Total</span>
+                <span id="total">€0.00</span>
+            </div>
+            <button class="login-btn" style="margin-top: 15px;">Proceed to Checkout</button>
+            <button class="login-btn" style="background: transparent; color: var(--color-text); border: 1px solid var(--color-border); margin-top: 10px;">Continue Shopping</button>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>Timeless Elegance</h1>
+        <p>Discover our collection of minimalist jewelry crafted for the modern individual</p>
+    </section>
+    <section class="collections">
+
+  <div class="collections-grid">
+    <div class="collection-item">
+      <div class="collection-image">
+        <img src="assets/images/earrings-collection-6O5tp3RC.png" alt="Earrings">
+      </div>
+      <div class="collection-caption">
+        <a href="#" class="collection-title">Organic Forms</a>
+        <p class="collection-sub">Nature-inspired pieces with fluid, sculptural details</p>
+      </div>
+    </div>
+
+    <div class="collection-item">
+      <div class="collection-image">
+        <img src="assets/images/link-bracelet-CMFM2KKw.png" alt="Necklaces">
+      </div>
+      <div class="collection-caption">
+        <a href="#" class="collection-title">Chain Collection</a>
+        <p class="collection-sub">Refined links and connections in precious metals</p>
+      </div>
+    </div>
+  </div>
+
+  <section class="product-section">
+  <div class="product-grid">
+
+    <!-- PRODUCT CARD -->
+    <div class="product-card">
+      <div class="product-image">
+        <span class="badge">NEW</span>
+        <img src="assets/images/pantheon-ChbEbbTu.jpg" class="img-main" alt="Pantheon Earrings">
+        <img src="assets/images/organic-earring-BV1LtJhH.png" class="img-hover" alt="Pantheon Earrings Hover">
+      </div>
+      <div class="product-info">
+        <p class="category">Earrings</p>
+        <div class="info-row">
+          <h3>Pantheon</h3>
+          <span>€2,850</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- PRODUCT CARD -->
+    <div class="product-card">
+      <div class="product-image">
+        <img src="assets/images/eclipse-ErA5xE4T.jpg" class="img-main" alt="Eclipse Bracelet">
+        <img src="assets/images/link-bracelet-CMFM2KKw.png" class="img-hover" alt="Eclipse Bracelet Hover">
+      </div>
+      <div class="product-info">
+        <p class="category">Bracelets</p>
+        <div class="info-row">
+          <h3>Eclipse</h3>
+          <span>€3,200</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- PRODUCT CARD -->
+    <div class="product-card">
+      <div class="product-image">
+        <span class="badge">NEW</span>
+        <img src="assets/images/halo-CMlMG7vQ.jpg" class="img-main" alt="Halo Earrings">
+        <img src="assets/images/organic-earring-BV1LtJhH.png" class="img-hover" alt="Halo Earrings Hover">
+      </div>
+      <div class="product-info">
+        <p class="category">Earrings</p>
+        <div class="info-row">
+          <h3>Halo</h3>
+          <span>€1,950</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+  <!-- WIDE IMAGE -->
+  <div class="collections-thumbnail">
+    <img src="assets/images/hero-image-Biu-8NYF.png" alt="Featured collection">
+    <div class="collection-caption">
+        <a href="#" class="collection-title">Modern Heritage</a>
+        <p class="collection-sub">Contemporary jewelry crafted with timeless elegance</p>
+      </div>
+  </div>
+
+  <div class="collections-thumbnail" id="second-thumbnail">
+    <div class="collection-image">
+      <img src="assets/images/organic-earring-BV1LtJhH.png" alt="Featured collection">
+    </div>
+    <div class="collection-caption">
+        <a href="#" class="collection-title">Artisan Craft</a>
+        <p class="collection-sub">Contemporary Handcrafted pieces with meticulous attention to detail</p>
+      </div>
+  </div>
+  <div class="collections-thumbnail" id="second-thumbnail">
+    <div class="collection-image">
+      <img src="assets/images/circular-collection-B1hP9RgJ.png" alt="Featured collection">
+    </div>
+    <div class="collection-caption">
+        <a href="#" class="collection-title">Circular Elements</a>
+        <p class="collection-sub">Geometric perfection meets contemporary minimalism</p>
+      </div>
+  </div>
+
+</section>
+
+<footer class="footer">
+
+  <div class="footer-top">
+    <div class="footer-grid">
+
+      <!-- BRAND -->
+      <div class="footer-brand">
+        <h3>Linea Jewelry Inc.</h3>
+        <p class="tagline">
+          Minimalist jewelry crafted for the modern individual
+        </p>
+
+        <div class="footer-block">
+          <strong>Visit Us</strong>
+          <p>
+            123 Madison Avenue<br>
+            New York, NY 10016
+          </p>
+        </div>
+
+        <div class="footer-block">
+          <strong>Contact</strong>
+          <p>
+            +1 (212) 555-0123<br>
+            hello@lineajewelry.com
+          </p>
+        </div>
+      </div>
+
+      <!-- SHOP -->
+      <div class="footer-links">
+        <h4>Shop</h4>
+        <a href="#">New In</a>
+        <a href="#">Rings</a>
+        <a href="#">Earrings</a>
+        <a href="#">Bracelets</a>
+        <a href="#">Necklaces</a>
+      </div>
+
+      <!-- SUPPORT -->
+      <div class="footer-links">
+        <h4>Support</h4>
+        <a href="#">Size Guide</a>
+        <a href="#">Care Instructions</a>
+        <a href="#">Returns</a>
+        <a href="#">Shipping</a>
+        <a href="#">Contact</a>
+      </div>
+
+      <!-- CONNECT -->
+      <div class="footer-links">
+        <h4>Connect</h4>
+        <a href="#">Instagram</a>
+        <a href="#">Pinterest</a>
+        <a href="#">Newsletter</a>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- BOTTOM BAR -->
+  <div class="footer-bottom">
+    <p>© 2024 Linea. All rights reserved.</p>
+
+    <div class="footer-legal">
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms of Service</a>
+    </div>
+  </div>
+
+</footer>
+
+
+    <script>
+        // Panel Management
+        const panels = {
+            search: document.getElementById('search-panel'),
+            account: document.getElementById('account-panel'),
+            wishlist: document.getElementById('wishlist-panel'),
+            cart: document.getElementById('cart-panel')
+        };
+
+        const overlay = document.getElementById('panel-overlay');
+
+        // Open Panel
+        function openPanel(panelName) {
+            panels[panelName].classList.add('active');
+            overlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Close Panel
+        function closePanel(panelName) {
+            panels[panelName].classList.remove('active');
+            overlay.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close All Panels
+        function closeAllPanels() {
+            Object.keys(panels).forEach(key => {
+                panels[key].classList.remove('active');
+            });
+            overlay.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Button Event Listeners
+        document.getElementById('search-btn').addEventListener('click', () => openPanel('search'));
+        document.getElementById('account-btn').addEventListener('click', () => openPanel('account'));
+        document.getElementById('wishlist-btn').addEventListener('click', () => openPanel('wishlist'));
+        document.getElementById('cart-btn').addEventListener('click', () => openPanel('cart'));
+
+        // Close on overlay click
+        overlay.addEventListener('click', closeAllPanels);
+
+        // Account tabs
+        document.querySelectorAll('.account-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                const tabName = this.getAttribute('data-tab');
+                document.querySelectorAll('.account-tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                this.classList.add('active');
+                document.getElementById(tabName + '-tab').classList.add('active');
+            });
+        });
+
+        // Search functionality
+        document.querySelectorAll('.search-tag').forEach(tag => {
+            tag.addEventListener('click', function() {
+                document.getElementById('search-input').value = this.textContent;
+            });
+        });
+
+        // Sample cart data
+        const cartData = [
+            { id: 1, name: 'Earrings', type: 'Pantheon', price: 2850, qty: 1, image: 'assets/images/pantheon-ChbEbbTu.jpg' },
+            { id: 2, name: 'Bracelets', type: 'Eclipse', price: 3200, qty: 1, image: 'assets/images/eclipse-ErA5xE4T.jpg' },
+            { id: 3, name: 'Earrings', type: 'Halo', price: 1950, qty: 1, image: 'assets/images/halo-CMlMG7vQ.jpg' }
+        ];
+
+        // Update cart display
+        function updateCartDisplay() {
+            const cartItemsDiv = document.getElementById('cart-items');
+            const emptyMsg = document.getElementById('cart-empty-msg');
+            
+            if (cartData.length === 0) {
+                cartItemsDiv.innerHTML = '';
+                emptyMsg.style.display = 'block';
+            } else {
+                emptyMsg.style.display = 'none';
+                cartItemsDiv.innerHTML = cartData.map(item => `
+                    <div class="cart-item">
+                        <div class="cart-item-image">
+                            <img src="${item.image}" alt="${item.name}">
+                        </div>
+                        <div class="cart-item-details">
+                            <div class="cart-item-name">${item.name}</div>
+                            <div style="font-size: 12px; color: var(--color-text-secondary); margin-bottom: 5px;">${item.type}</div>
+                            <div class="cart-item-price">€${item.price.toLocaleString()}</div>
+                            <div class="cart-item-quantity">
+                                <button class="qty-btn">−</button>
+                                <span>${item.qty}</span>
+                                <button class="qty-btn">+</button>
+                            </div>
+                        </div>
+                        <button class="remove-btn">✕</button>
+                    </div>
+                `).join('');
+            }
+
+            // Update summary
+            const subtotal = cartData.reduce((sum, item) => sum + (item.price * item.qty), 0);
+            document.getElementById('subtotal').textContent = '€' + subtotal.toLocaleString();
+            document.getElementById('total').textContent = '€' + subtotal.toLocaleString();
+        }
+
+        // Initialize cart
+        updateCartDisplay();
+    </script>
+</body>
+</html>

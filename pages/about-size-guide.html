@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Size Guide – Linea</title>
+
+<style>
+:root {
+  --text-main: #1a1a1a;
+  --text-muted: #777;
+  --border: #e6e6e6;
+  --max-width: 1200px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  color: var(--text-main);
+  background: #fff;
+  line-height: 1.7;
+}
+
+/* ================= NAVBAR ================= */
+.navbar {
+  background: #ffffff;
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.navbar-container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 32px;
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.navbar-logo {
+  font-size: 24px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+}
+
+.navbar-menu {
+  display: flex;
+  gap: 40px;
+}
+
+.nav-dropdown {
+  position: relative;
+}
+
+.dropdown-toggle {
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #222;
+  text-decoration: none;
+  padding: 8px 0;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 220px;
+  background: #fff;
+  border: 1px solid var(--border);
+  padding: 12px 0;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition: all 0.25s ease;
+}
+
+.nav-dropdown:hover .dropdown-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.dropdown-item {
+  display: block;
+  padding: 10px 24px;
+  font-size: 14px;
+  color: #555;
+  text-decoration: none;
+}
+
+.dropdown-item:hover {
+  background: #f7f7f7;
+  color: #000;
+}
+
+/* ================= HERO ================= */
+.page-hero {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 120px 24px 80px;
+}
+
+.page-hero h1 {
+  font-size: 48px;
+  font-weight: 400;
+  margin-bottom: 16px;
+}
+
+.page-hero p {
+  font-size: 18px;
+  color: var(--text-muted);
+}
+
+.divider {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin-top: 64px;
+}
+
+/* ================= SECTION ================= */
+.section {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 100px 24px;
+}
+
+.section h2 {
+  font-size: 32px;
+  font-weight: 400;
+  margin-bottom: 48px;
+}
+
+/* ================= RING METHODS ================= */
+.methods {
+  background: #fafafa;
+  padding: 64px;
+}
+
+.methods h3 {
+  font-size: 20px;
+  margin-bottom: 24px;
+}
+
+.methods-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+}
+
+.method h4 {
+  font-size: 16px;
+  margin-bottom: 16px;
+}
+
+.method ol {
+  padding-left: 20px;
+  color: var(--text-muted);
+}
+
+.method li {
+  margin-bottom: 8px;
+}
+
+/* ================= TABLE ================= */
+.table-wrapper {
+  margin-top: 64px;
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+th, td {
+  padding: 14px;
+  border: 1px solid var(--border);
+  text-align: left;
+}
+
+th {
+  font-weight: 500;
+  background: #fafafa;
+}
+
+/* ================= BRACELET & NECKLACE ================= */
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+}
+
+.list-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 14px;
+}
+
+/* ================= HELP ================= */
+.help {
+  background: #fafafa;
+}
+
+.help p {
+  max-width: 700px;
+  color: var(--text-muted);
+  margin-bottom: 32px;
+}
+
+.help-buttons {
+  display: flex;
+  gap: 16px;
+}
+
+.btn-outline {
+  padding: 12px 20px;
+  border: 1px solid var(--border);
+  background: #fff;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.btn-solid {
+  padding: 12px 20px;
+  background: #111;
+  color: #fff;
+  border: none;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 1024px) {
+  .methods-grid,
+  .two-col {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .page-hero h1 {
+    font-size: 34px;
+  }
+
+  .section {
+    padding: 72px 20px;
+  }
+
+  .methods {
+    padding: 32px;
+  }
+
+  .help-buttons {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+.footer {
+  border-top: 1px solid #e6e6e6;
+  margin-top: 120px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+/* TOP AREA */
+.footer-top {
+  padding: 64px 48px;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 48px;
+}
+
+/* BRAND COLUMN */
+.footer-brand h3 {
+  font-size: 30px;
+  margin-bottom: 12px;
+  color: #111;
+}
+
+.tagline {
+  font-size: 14px;
+  color: #777;
+  margin-bottom: 24px;
+}
+
+.footer-block {
+  margin-bottom: 20px;
+}
+
+.footer-block strong {
+  font-size: 14px;
+  display: block;
+  margin-bottom: 6px;
+  color: #111;
+}
+
+.footer-block p {
+  font-size: 14px;
+  color: #555;
+  line-height: 1.6;
+}
+
+/* LINKS */
+.footer-links h4 {
+  font-size: 14px;
+  margin-bottom: 16px;
+  color: #111;
+}
+
+.footer-links a {
+  display: block;
+  font-size: 14px;
+  color: #666;
+  text-decoration: none;
+  margin-bottom: 10px;
+}
+
+.footer-links a:hover {
+  color: #000;
+}
+
+/* BOTTOM BAR */
+.footer-bottom {
+  border-top: 1px solid #e6e6e6;
+  padding: 16px 48px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  color: #666;
+  border-bottom: 1px solid #e6e6e6;
+}
+
+.footer-legal a {
+  margin-left: 24px;
+  color: #666;
+  text-decoration: none;
+}
+
+.footer-legal a:hover {
+  color: #000;
+}
+
+/* RESPONSIVE */
+@media (max-width: 1024px) {
+  .footer-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+  }
+}
+
+@media (max-width: 640px) {
+  .footer-top {
+    padding: 48px 20px;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    gap: 12px;
+    padding: 16px 20px;
+  }
+
+  .footer-legal a {
+    margin-left: 16px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="navbar-container">
+    <div class="navbar-logo">
+      <a href="../index.html" style="text-decoration:none;color:inherit;">LINEA</a>
+    </div>
+
+    <div class="navbar-menu">
+      <div class="nav-dropdown">
+        <a href="../pages/shop.html" class="dropdown-toggle">Shop</a>
+        <div class="dropdown-menu">
+          <a class="dropdown-item" href="#">Rings</a>
+          <a class="dropdown-item" href="#">Necklaces</a>
+          <a class="dropdown-item" href="#">Earrings</a>
+          <a class="dropdown-item" href="#">Bracelets</a>
+        </div>
+      </div>
+
+      <div class="nav-dropdown">
+        <a href="#" class="dropdown-toggle">New In</a>
+        <div class="dropdown-menu">
+            <a href="new-in.html?filter=this-weeks-arrivals" class="dropdown-item">This Week's Arrivals</a>
+            <a href="new-in.html?filter=spring-collection" class="dropdown-item">Spring Collection</a>
+            <a href="new-in.html?filter=featured-designers" class="dropdown-item">Featured Designers</a>
+            <a href="new-in.html?filter=limited-edition" class="dropdown-item">Limited Edition</a>
+            <a href="new-in.html?filter=pre-orders" class="dropdown-item">Pre-Orders</a>
+
+        </div>
+      </div>
+
+      <div class="nav-dropdown">
+        <a href="#" class="dropdown-toggle">About</a>
+        <div class="dropdown-menu">
+          <a class="dropdown-item" href="about-story.html">Our Story</a>
+          <a class="dropdown-item" href="about-sustainability.html">Sustainability</a>
+          <a class="dropdown-item" href="about-size-guide.html">Size Guide</a>
+          <a class="dropdown-item" href="about-customer-care.html">Customer Care</a>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+<!-- HERO -->
+<section class="page-hero">
+  <h1>Size Guide</h1>
+  <p>Find your perfect fit with our comprehensive sizing guide</p>
+  <hr class="divider">
+</section>
+
+<!-- RING SIZING -->
+<section class="section">
+  <h2>Ring Sizing</h2>
+
+  <div class="methods">
+    <h3>How to Measure Your Ring Size</h3>
+
+    <div class="methods-grid">
+      <div class="method">
+        <h4>Method 1: Using a Ring You Own</h4>
+        <ol>
+          <li>Take a ring that fits comfortably on your desired finger</li>
+          <li>Place it on a ruler and measure the inner diameter in millimeters</li>
+          <li>Use our size chart below to find your size</li>
+        </ol>
+      </div>
+
+      <div class="method">
+        <h4>Method 2: Using String or Paper</h4>
+        <ol>
+          <li>Wrap string or paper around your finger where the ring will sit</li>
+          <li>Mark where the material overlaps</li>
+          <li>Measure the length in millimeters</li>
+          <li>Divide by 3.14 to get the diameter</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <!-- TABLE -->
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>US Size</th>
+          <th>UK Size</th>
+          <th>EU Size</th>
+          <th>Diameter (mm)</th>
+          <th>Circumference (mm)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>5</td><td>J</td><td>49</td><td>15.6</td><td>49.0</td></tr>
+        <tr><td>5.5</td><td>K</td><td>50</td><td>16.0</td><td>50.2</td></tr>
+        <tr><td>6</td><td>L</td><td>51</td><td>16.4</td><td>51.5</td></tr>
+        <tr><td>6.5</td><td>M</td><td>52</td><td>16.8</td><td>52.8</td></tr>
+        <tr><td>7</td><td>N</td><td>54</td><td>17.2</td><td>54.0</td></tr>
+        <tr><td>7.5</td><td>O</td><td>55</td><td>17.6</td><td>55.3</td></tr>
+        <tr><td>8</td><td>P</td><td>56</td><td>18.0</td><td>56.5</td></tr>
+        <tr><td>8.5</td><td>Q</td><td>57</td><td>18.4</td><td>57.8</td></tr>
+        <tr><td>9</td><td>R</td><td>59</td><td>18.8</td><td>59.1</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- BRACELET & NECKLACE -->
+<section class="section">
+  <h2>Bracelet & Necklace Sizing</h2>
+
+  <div class="two-col">
+    <div>
+      <h3>Bracelet Sizes</h3>
+      <div class="list-row"><span>Small</span><span>6.5" – 7"</span></div>
+      <div class="list-row"><span>Medium</span><span>7" – 7.5"</span></div>
+      <div class="list-row"><span>Large</span><span>7.5" – 8"</span></div>
+    </div>
+
+    <div>
+      <h3>Necklace Lengths</h3>
+      <div class="list-row"><span>Choker</span><span>14" – 16"</span></div>
+      <div class="list-row"><span>Princess</span><span>17" – 19"</span></div>
+      <div class="list-row"><span>Matinee</span><span>20" – 24"</span></div>
+      <div class="list-row"><span>Opera</span><span>28" – 36"</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- HELP -->
+<section class="section help">
+  <h2>Need Help?</h2>
+  <p>
+    Still unsure about sizing? Our jewelry consultants are here to help you
+    find the perfect fit. Download our printable size guide or schedule a
+    virtual consultation.
+  </p>
+
+  <div class="help-buttons">
+    <button class="btn-outline">Download PDF Guide</button>
+    <button class="btn-solid">Schedule Consultation</button>
+  </div>
+</section>
+
+<footer class="footer">
+
+  <div class="footer-top">
+    <div class="footer-grid">
+
+      <!-- BRAND -->
+      <div class="footer-brand">
+        <h3>Linea Jewelry Inc.</h3>
+        <p class="tagline">
+          Minimalist jewelry crafted for the modern individual
+        </p>
+
+        <div class="footer-block">
+          <strong>Visit Us</strong>
+          <p>
+            123 Madison Avenue<br>
+            New York, NY 10016
+          </p>
+        </div>
+
+        <div class="footer-block">
+          <strong>Contact</strong>
+          <p>
+            +1 (212) 555-0123<br>
+            hello@lineajewelry.com
+          </p>
+        </div>
+      </div>
+
+      <!-- SHOP -->
+      <div class="footer-links">
+        <h4>Shop</h4>
+        <a href="#">New In</a>
+        <a href="#">Rings</a>
+        <a href="#">Earrings</a>
+        <a href="#">Bracelets</a>
+        <a href="#">Necklaces</a>
+      </div>
+
+      <!-- SUPPORT -->
+      <div class="footer-links">
+        <h4>Support</h4>
+        <a href="#">Size Guide</a>
+        <a href="#">Care Instructions</a>
+        <a href="#">Returns</a>
+        <a href="#">Shipping</a>
+        <a href="#">Contact</a>
+      </div>
+
+      <!-- CONNECT -->
+      <div class="footer-links">
+        <h4>Connect</h4>
+        <a href="#">Instagram</a>
+        <a href="#">Pinterest</a>
+        <a href="#">Newsletter</a>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- BOTTOM BAR -->
+  <div class="footer-bottom">
+    <p>© 2024 Linea. All rights reserved.</p>
+
+    <div class="footer-legal">
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms of Service</a>
+    </div>
+  </div>
+
+</footer>
+
+</body>
+</html>
