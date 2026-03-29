@@ -8,21 +8,6 @@ A modern, fully responsive landing page for a fictional jewelry brand **LINEA**.
 ## Click the (Live Demo) button to see the Live Web Page  **=> [![Live Demo](https://img.shields.io/badge/Live-Demo-blue)](https://hcraghuvanshi2007.github.io/Lineaa/) <=**
 
 
-Open `index.html` in your browser using a local development server:
-
-```bash
-# Using Python 3
-python -m http.server 8000
-
-# Using Node.js (with http-server)
-npx http-server
-
-# Using VS Code Live Server extension
-# Right-click on index.html → Open with Live Server
-```
-
-Then navigate to: `http://localhost:8000` (or the port your server uses)
-
 ---
 
 ## ✨ Key Features
