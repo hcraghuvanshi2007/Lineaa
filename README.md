@@ -5,6 +5,8 @@ A modern, fully responsive landing page for a fictional jewelry brand **LINEA**.
 ---
 
 ## 🌐 Live Preview
+## Click the (Live Demo) button to see the Live Web Page  **=> [![Live Demo](https://img.shields.io/badge/Live-Demo-blue)](https://hcraghuvanshi2007.github.io/Lineaa/) <=**
+
 
 Open `index.html` in your browser using a local development server:
 
