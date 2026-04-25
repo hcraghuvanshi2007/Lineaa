@@ -555,23 +555,124 @@ body {
 
 /* Hero Section */
 .hero {
-    background: linear-gradient(135deg, rgba(33, 128, 141, 0.12) 0%, rgba(33, 128, 141, 0.05) 100%);
-    padding: 100px 20px;
+    background: var(--color-background);
+    padding: 140px 20px;
     text-align: center;
     border-bottom: 1px solid var(--color-border);
+    position: relative;
+    overflow: hidden;
 }
 
-.hero h1 {
-    font-size: 48px;
-    margin-bottom: 15px;
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at center, rgba(33, 128, 141, 0.05) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+.hero-content {
+    max-width: 800px;
+    margin: 0 auto;
+    animation: fadeUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 64px;
+    font-weight: 400;
+    margin-bottom: 24px;
     color: var(--color-text);
+    letter-spacing: -0.02em;
+    line-height: 1.1;
 }
 
-.hero p {
-    font-size: 18px;
+.hero-title .italic {
+    font-style: italic;
+    font-weight: 400;
+}
+
+.hero-subtitle {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 16px;
+    font-weight: 300;
+    color: var(--color-text-secondary);
+    max-width: 500px;
+    margin: 0 auto;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    line-height: 1.6;
+}
+
+.hero-decoration {
+    width: 40px;
+    height: 1px;
+    background: var(--color-primary);
+    margin: 40px auto 0;
+    opacity: 0.6;
+}
+
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Global Page Headers */
+.page-header {
+    text-align: center;
+    padding: 80px 20px 40px;
+    background: var(--color-background);
+    animation: fadeUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.page-header .breadcrumb {
+    margin-bottom: 24px;
+    font-size: 13px;
+    color: var(--color-text-secondary);
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.page-header .breadcrumb a {
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.page-header .breadcrumb a:hover {
+    color: var(--color-primary);
+}
+
+.page-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 56px;
+    font-weight: 400;
+    margin-bottom: 16px;
+    color: var(--color-text);
+    letter-spacing: -0.01em;
+}
+
+.page-subtitle {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 15px;
+    font-weight: 300;
     color: var(--color-text-secondary);
     max-width: 600px;
     margin: 0 auto;
+    letter-spacing: 0.05em;
+    line-height: 1.6;
 }
 
 .collections {

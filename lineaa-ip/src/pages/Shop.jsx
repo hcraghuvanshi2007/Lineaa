@@ -1,5 +1,5 @@
 import './Shop.css';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 
 import haloImg from '../assets/images/halo-CMlMG7vQ.jpg';
 import obliqueImg from '../assets/images/oblique-BrLAWbgb.jpg';
@@ -18,11 +18,25 @@ const products = [
 import { useState, useEffect } from 'react';
 
 function Shop({ addToCart, addToWishlist }) {
+  const [searchParams] = useSearchParams();
   const [currentPage, setCurrentPage] = useState(1);
   const [activeCategories, setActiveCategories] = useState([]);
   const [activePrices, setActivePrices] = useState([]);
   const [sortBy, setSortBy] = useState('featured');
   const [displayProducts, setDisplayProducts] = useState(products);
+
+  // Sync with URL parameters on mount/navigation
+  useEffect(() => {
+    const catParam = searchParams.get('category');
+    if (catParam) {
+      // Mapping URL plural/singular to match internal filter logic
+      const cat = catParam.toLowerCase();
+      const mapped = cat.endsWith('s') ? cat.slice(0, -1) : cat;
+      setActiveCategories([mapped]);
+    } else {
+      setActiveCategories([]);
+    }
+  }, [searchParams]);
 
   // Apply filters whenever criteria change
   useEffect(() => {
@@ -83,6 +97,15 @@ function Shop({ addToCart, addToWishlist }) {
   
   return (
     <div className="shop-container">
+      <div className="page-header">
+        <div className="breadcrumb">
+            <Link to="/">Home</Link>
+            <span>›</span>
+            <span>Shop</span>
+        </div>
+        <h1 className="page-title">Curated Shop</h1>
+        <p className="page-subtitle">Explore our complete collection of handcrafted minimalist jewelry</p>
+      </div>
       <div className="shop-layout">
         <aside className="sidebar">
             <div className="filter-group">

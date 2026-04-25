@@ -1,5 +1,5 @@
 import './NewIn.css';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 
 import pantheonImg from '../assets/images/pantheon-ChbEbbTu.jpg';
 import eclipseImg from '../assets/images/eclipse-ErA5xE4T.jpg';
@@ -19,11 +19,50 @@ const products = [
 
 import { useState, useEffect } from 'react';
 
+const collectionContent = {
+  'all': {
+    title: 'New Collections',
+    desc: 'Discover our latest arrivals and exclusive collections'
+  },
+  'this-weeks-arrivals': {
+    title: "This Week's Arrivals",
+    desc: 'Explore the freshest designs added to our catalog this week.'
+  },
+  'spring-collection': {
+    title: 'Spring Collection',
+    desc: 'Lightweight textures and vibrant minimalist pieces for the new season.'
+  },
+  'featured-designers': {
+    title: 'Featured Designers',
+    desc: "Exclusive collaborations with the world's most visionary artists."
+  },
+  'limited-edition': {
+    title: 'Limited Edition',
+    desc: 'Rare, one-of-a-kind pieces that will not be restocked.'
+  },
+  'pre-orders': {
+    title: 'Pre-Orders',
+    desc: 'Secure your favorites from our upcoming collection before they launch.'
+  }
+};
+
 function NewIn({ addToCart, addToWishlist }) {
+  const [searchParams] = useSearchParams();
   const [currentPage, setCurrentPage] = useState(1);
   const [activePrices, setActivePrices] = useState([]);
+  const [activeCollection, setActiveCollection] = useState('all');
   const [sortBy, setSortBy] = useState('featured');
   const [displayProducts, setDisplayProducts] = useState(products);
+
+  // Map URL filters to internal state
+  useEffect(() => {
+    const filterParam = searchParams.get('filter');
+    if (filterParam) {
+      setActiveCollection(filterParam);
+    } else {
+      setActiveCollection('all');
+    }
+  }, [searchParams]);
 
   // Apply filters whenever criteria change
   useEffect(() => {
@@ -37,6 +76,11 @@ function NewIn({ addToCart, addToWishlist }) {
         if (activePrices.includes('over-5000') && p.price > 5000) return true;
         return false;
       });
+    }
+
+    // Pseudo-filtering for collections (shuffling for demo)
+    if (activeCollection !== 'all') {
+      filtered = [...filtered].sort(() => Math.random() - 0.5);
     }
 
     if (sortBy === 'price-asc') {
@@ -76,30 +120,49 @@ function NewIn({ addToCart, addToWishlist }) {
 
   return (
     <div className="new-in-container">
-      <div className="new-in-header">
+      <div className="page-header">
         <div className="breadcrumb">
             <Link to="/">Home</Link>
             <span>›</span>
             <span>New In</span>
         </div>
-        <h1>New Collections</h1>
-        <p>Discover our latest arrivals and exclusive collections</p>
+        <h1 className="page-title">New Collections</h1>
+        <p className="page-subtitle">Discover our latest arrivals and exclusive collections</p>
       </div>
       
       <div className="collection-highlight">
-        <h2>Latest Arrivals</h2>
-        <p>Fresh designs added weekly. Be the first to discover our newest pieces.</p>
+        <h2>{collectionContent[activeCollection]?.title || 'Latest Arrivals'}</h2>
+        <p>{collectionContent[activeCollection]?.desc || 'Fresh designs added weekly. Be the first to discover our newest pieces.'}</p>
       </div>
 
       <div className="new-in-layout">
         <aside className="sidebar">
             <div className="filter-group">
                 <h3>Collections</h3>
-                <div className="filter-item"><input type="radio" name="collection" id="this-week" /><label htmlFor="this-week">This Week's Arrivals</label></div>
-                <div className="filter-item"><input type="radio" name="collection" id="spring" /><label htmlFor="spring">Spring Collection</label></div>
-                <div className="filter-item"><input type="radio" name="collection" id="featured" /><label htmlFor="featured">Featured Designers</label></div>
-                <div className="filter-item"><input type="radio" name="collection" id="limited" /><label htmlFor="limited">Limited Edition</label></div>
-                <div className="filter-item"><input type="radio" name="collection" id="preorder" /><label htmlFor="preorder">Pre-Orders</label></div>
+                <div className="filter-item">
+                    <input type="radio" name="collection" id="all-coll" checked={activeCollection === 'all'} onChange={() => setActiveCollection('all')} />
+                    <label htmlFor="all-coll">All Items</label>
+                </div>
+                <div className="filter-item">
+                    <input type="radio" name="collection" id="this-week" checked={activeCollection === 'this-weeks-arrivals'} onChange={() => setActiveCollection('this-weeks-arrivals')} />
+                    <label htmlFor="this-week">This Week's Arrivals</label>
+                </div>
+                <div className="filter-item">
+                    <input type="radio" name="collection" id="spring" checked={activeCollection === 'spring-collection'} onChange={() => setActiveCollection('spring-collection')} />
+                    <label htmlFor="spring">Spring Collection</label>
+                </div>
+                <div className="filter-item">
+                    <input type="radio" name="collection" id="featured-coll" checked={activeCollection === 'featured-designers'} onChange={() => setActiveCollection('featured-designers')} />
+                    <label htmlFor="featured-coll">Featured Designers</label>
+                </div>
+                <div className="filter-item">
+                    <input type="radio" name="collection" id="limited" checked={activeCollection === 'limited-edition'} onChange={() => setActiveCollection('limited-edition')} />
+                    <label htmlFor="limited">Limited Edition</label>
+                </div>
+                <div className="filter-item">
+                    <input type="radio" name="collection" id="preorder" checked={activeCollection === 'pre-orders'} onChange={() => setActiveCollection('pre-orders')} />
+                    <label htmlFor="preorder">Pre-Orders</label>
+                </div>
             </div>
 
             <div className="filter-group">
