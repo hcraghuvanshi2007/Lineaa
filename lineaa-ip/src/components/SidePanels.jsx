@@ -132,7 +132,7 @@ function WishlistPanel({ onClose, wishlistData, setWishlistData }) {
             {wishlistData.map(item => (
               <div key={item.id} className="wishlist-item" style={{ display: 'flex', gap: '15px', padding: '15px 0', borderBottom: '1px solid var(--color-border)', alignItems: 'center' }}>
                 <div className="wishlist-item-image" style={{ width: '70px', height: '70px', background: 'var(--color-secondary)', borderRadius: '6px', overflow: 'hidden' }}>
-                  <img src={item.img || item.image} alt={item.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  <img src={item.img} alt={item.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                 </div>
                 <div className="wishlist-item-details" style={{ flex: 1 }}>
                   <div className="wishlist-item-name" style={{ fontSize: '13px', fontWeight: '500', marginBottom: '5px' }}>{item.name}</div>
@@ -195,11 +195,11 @@ function CartPanel({ onClose, cartData, setCartData, wishlistData, setWishlistDa
             {cartData.map(item => (
               <div key={item.id} className="cart-item">
                 <div className="cart-item-image">
-                  <img src={item.image || item.img} alt={item.name} />
+                  <img src={item.img} alt={item.name} />
                 </div>
                 <div className="cart-item-details">
                   <div className="cart-item-name">{item.name}</div>
-                  <div style={{ fontSize: '12px', color: 'var(--color-text-secondary)', marginBottom: '5px' }}>{item.type}</div>
+                  <div style={{ fontSize: '12px', color: 'var(--color-text-secondary)', marginBottom: '5px' }}>{item.category}</div>
                   <div className="cart-item-price">€{item.price.toLocaleString()}</div>
                   <div className="cart-item-quantity">
                     <button className="qty-btn" onClick={() => updateQty(item.id, -1)}>−</button>

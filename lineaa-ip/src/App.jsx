@@ -5,6 +5,7 @@ import Home from './pages/Home';
 import Shop from './pages/Shop';
 import NewIn from './pages/NewIn';
 import About from './pages/About';
+import ProductDetails from './pages/ProductDetails';
 import Footer from './components/Footer';
 import SidePanels from './components/SidePanels';
 import ScrollToTop from './components/ScrollToTop';
@@ -14,9 +15,9 @@ import eclipseImg from './assets/images/eclipse-ErA5xE4T.jpg';
 import haloImg from './assets/images/halo-CMlMG7vQ.jpg';
 
 const initialCartData = [
-  { id: 1, name: 'Earrings', type: 'Pantheon', price: 2850, qty: 1, image: pantheonImg },
-  { id: 2, name: 'Bracelets', type: 'Eclipse', price: 3200, qty: 1, image: eclipseImg },
-  { id: 3, name: 'Earrings', type: 'Halo', price: 1950, qty: 1, image: haloImg },
+  { id: 1, name: 'Pantheon', category: 'Earrings', price: 2850, qty: 1, img: pantheonImg },
+  { id: 2, name: 'Eclipse', category: 'Bracelets', price: 3200, qty: 1, img: eclipseImg },
+  { id: 3, name: 'Halo', category: 'Earrings', price: 1950, qty: 1, img: haloImg },
 ];
 
 function App() {
@@ -72,6 +73,7 @@ function App() {
         <Route path="/shop" element={<Shop addToCart={addToCart} addToWishlist={addToWishlist} />} />
         <Route path="/new-in" element={<NewIn addToCart={addToCart} addToWishlist={addToWishlist} />} />
         <Route path="/about/:page" element={<About />} />
+        <Route path="/product/:id" element={<ProductDetails addToCart={addToCart} addToWishlist={addToWishlist} />} />
       </Routes>
 
       <Footer />

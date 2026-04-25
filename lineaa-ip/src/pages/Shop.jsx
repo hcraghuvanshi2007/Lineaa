@@ -8,15 +8,79 @@ import pantheonImg from '../assets/images/pantheon-ChbEbbTu.jpg';
 import eclipseImg from '../assets/images/eclipse-ErA5xE4T.jpg';
 
 const products = [
-  { id: 1, name: 'Halo', category: 'Earrings', price: 119, img: haloImg },
-  { id: 2, name: 'Oblique', category: 'Earrings', price: 179, img: obliqueImg },
-  { id: 3, name: 'Shadow Line', category: 'Bracelet', price: 349, img: shadowlineImg },
-  { id: 4, name: 'Pantheon', category: 'Earrings', price: 129, img: pantheonImg },
-  { id: 5, name: 'Eclipse', category: 'Bracelets', price: 399, img: eclipseImg },
-  { id: 6, name: 'Halo', category: 'Earrings', price: 119, img: haloImg },
+  { id: 1, name: 'Pantheon', category: 'Earrings', price: 2850, img: pantheonImg, badge: 'NEW' },
+  { id: 2, name: 'Eclipse', category: 'Bracelets', price: 3200, img: eclipseImg, badge: 'EXCLUSIVE' },
+  { id: 3, name: 'Halo', category: 'Earrings', price: 1950, img: haloImg, badge: 'NEW' },
+  { id: 4, name: 'Oblique', category: 'Earrings', price: 1790, img: obliqueImg, badge: 'COMING SOON' },
+  { id: 5, name: 'Shadow Line', category: 'Bracelets', price: 2340, img: shadowlineImg, badge: 'EXCLUSIVE' },
 ];
 
+import { useState, useEffect } from 'react';
+
 function Shop({ addToCart, addToWishlist }) {
+  const [currentPage, setCurrentPage] = useState(1);
+  const [activeCategories, setActiveCategories] = useState([]);
+  const [activePrices, setActivePrices] = useState([]);
+  const [sortBy, setSortBy] = useState('featured');
+  const [displayProducts, setDisplayProducts] = useState(products);
+
+  // Apply filters whenever criteria change
+  useEffect(() => {
+    let filtered = products;
+
+    if (activeCategories.length > 0) {
+      filtered = filtered.filter(p => activeCategories.some(cat => p.category.toLowerCase().includes(cat)));
+    }
+
+    if (activePrices.length > 0) {
+      filtered = filtered.filter(p => {
+        if (activePrices.includes('under-500') && p.price < 500) return true;
+        if (activePrices.includes('500-1000') && p.price >= 500 && p.price <= 1000) return true;
+        if (activePrices.includes('1000-5000') && p.price > 1000 && p.price <= 5000) return true;
+        if (activePrices.includes('over-5000') && p.price > 5000) return true;
+        return false;
+      });
+    }
+
+    if (sortBy === 'price-asc') {
+      filtered = filtered.sort((a, b) => a.price - b.price);
+    } else if (sortBy === 'price-desc') {
+      filtered = filtered.sort((a, b) => b.price - a.price);
+    } else if (sortBy === 'newest') {
+      filtered = filtered.sort((a, b) => b.id - a.id);
+    } else if (sortBy === 'popular') {
+      filtered = filtered.sort((a, b) => a.id - b.id);
+    }
+
+    setDisplayProducts([...filtered]);
+    setCurrentPage(1); // Reset pagination on new filter
+  }, [activeCategories, activePrices, sortBy]);
+
+  const handleCategoryChange = (val) => {
+    setActiveCategories(prev => prev.includes(val) ? prev.filter(c => c !== val) : [...prev, val]);
+  };
+
+  const handlePriceChange = (val) => {
+    setActivePrices(prev => prev.includes(val) ? prev.filter(p => p !== val) : [...prev, val]);
+  };
+
+  const goToPage = (page, e) => {
+    if (e) e.preventDefault();
+    if (page < 1 || page > 3) return; // limit to 3 pseudo-pages for demo
+    
+    setCurrentPage(page);
+    
+    // Create random shuffle of exact same products array
+    if (page === 1) {
+      setDisplayProducts(products); // base layout for page 1
+    } else {
+      setDisplayProducts([...products].sort(() => Math.random() - 0.5));
+    }
+
+    // Scroll to top of grid
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+  
   return (
     <div className="shop-container">
       <div className="shop-layout">
@@ -24,29 +88,29 @@ function Shop({ addToCart, addToWishlist }) {
             <div className="filter-group">
                 <h3>Category</h3>
                 <div className="filter-item">
-                    <input type="checkbox" id="rings" value="rings" />
+                    <input type="checkbox" id="rings" checked={activeCategories.includes('ring')} onChange={() => handleCategoryChange('ring')} />
                     <label htmlFor="rings">Rings</label>
                 </div>
                 <div className="filter-item">
-                    <input type="checkbox" id="necklaces" value="necklaces" />
+                    <input type="checkbox" id="necklaces" checked={activeCategories.includes('necklace')} onChange={() => handleCategoryChange('necklace')} />
                     <label htmlFor="necklaces">Necklaces</label>
                 </div>
                 <div className="filter-item">
-                    <input type="checkbox" id="earrings" value="earrings" />
+                    <input type="checkbox" id="earrings" checked={activeCategories.includes('earring')} onChange={() => handleCategoryChange('earring')} />
                     <label htmlFor="earrings">Earrings</label>
                 </div>
                 <div className="filter-item">
-                    <input type="checkbox" id="bracelets" value="bracelets" />
+                    <input type="checkbox" id="bracelets" checked={activeCategories.includes('bracelet')} onChange={() => handleCategoryChange('bracelet')} />
                     <label htmlFor="bracelets">Bracelets</label>
                 </div>
             </div>
 
             <div className="filter-group">
                 <h3>Price Range</h3>
-                <div className="filter-item"><input type="checkbox" id="price1" /><label htmlFor="price1">Under €500</label></div>
-                <div className="filter-item"><input type="checkbox" id="price2" /><label htmlFor="price2">€500 - €1,000</label></div>
-                <div className="filter-item"><input type="checkbox" id="price3" /><label htmlFor="price3">€1,000 - €5,000</label></div>
-                <div className="filter-item"><input type="checkbox" id="price4" /><label htmlFor="price4">€5,000+</label></div>
+                <div className="filter-item"><input type="checkbox" id="price1" checked={activePrices.includes('under-500')} onChange={() => handlePriceChange('under-500')} /><label htmlFor="price1">Under €500</label></div>
+                <div className="filter-item"><input type="checkbox" id="price2" checked={activePrices.includes('500-1000')} onChange={() => handlePriceChange('500-1000')} /><label htmlFor="price2">€500 - €1,000</label></div>
+                <div className="filter-item"><input type="checkbox" id="price3" checked={activePrices.includes('1000-5000')} onChange={() => handlePriceChange('1000-5000')} /><label htmlFor="price3">€1,000 - €5,000</label></div>
+                <div className="filter-item"><input type="checkbox" id="price4" checked={activePrices.includes('over-5000')} onChange={() => handlePriceChange('over-5000')} /><label htmlFor="price4">€5,000+</label></div>
             </div>
             
             <div className="filter-group">
@@ -59,8 +123,8 @@ function Shop({ addToCart, addToWishlist }) {
 
         <div className="shop-content">
           <div className="controls-bar">
-            <span className="results-count">Showing <strong>{products.length}</strong> products</span>
-            <select className="sort-dropdown">
+            <span className="results-count">Showing <strong>{displayProducts.length}</strong> products</span>
+            <select className="sort-dropdown" value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
                 <option value="featured">Featured</option>
                 <option value="newest">Newest</option>
                 <option value="price-asc">Price: Low to High</option>
@@ -70,46 +134,81 @@ function Shop({ addToCart, addToWishlist }) {
           </div>
           
           <div className="product-grid">
-            {products.map((product, idx) => (
-                <div className="product-card" key={idx}>
-                    <div className="product-image">
-                        <img src={product.img} alt={product.name} />
+            {displayProducts.map((product, idx) => (
+                <Link to={`/product/${product.id}`} className="product-card" key={idx} style={{ textDecoration: 'none', color: 'inherit', background: 'var(--color-surface)', borderRadius: '8px', overflow: 'hidden', border: '1px solid var(--color-border)', position: 'relative', display: 'block' }}>
+                    <div className="product-image" style={{ height: '300px', backgroundColor: '#f9f9f9' }}>
+                        <img src={product.img} alt={product.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                        {product.badge && (
+                            <span className="product-badge" style={{ position: 'absolute', top: '15px', left: '15px', background: '#000', color: '#fff', fontSize: '10px', padding: '4px 8px', borderRadius: '3px', fontWeight: '600', textTransform: 'uppercase' }}>
+                                {product.badge}
+                            </span>
+                        )}
+                        <div className="product-actions">
+                            <button 
+                                className="action-btn" 
+                                title="Add to Wishlist"
+                                onClick={(e) => { e.preventDefault(); e.stopPropagation(); addToWishlist(product); }}
+                            >
+                                ♡
+                            </button>
+                        </div>
                     </div>
-                    <div className="product-info">
+                    <div className="product-info" style={{ padding: '20px' }}>
                         <div className="category" style={{ fontSize: '12px', color: 'var(--color-text-secondary)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '8px' }}>
                             {product.category}
                         </div>
                         <div className="product-name" style={{ fontSize: '15px', fontWeight: '600', marginBottom: '8px' }}>{product.name}</div>
                         <div className="product-price" style={{ fontSize: '15px', fontWeight: '600', color: 'var(--color-primary)' }}>
-                            €{product.price}
+                            €{product.price.toLocaleString()}
                         </div>
-                        <div className="product-actions" style={{ display: 'flex', gap: '10px', marginTop: '12px' }}>
+                        <div className="product-actions" style={{ display: 'flex', gap: '10px', marginTop: '15px' }}>
                             <button 
                               className="add-to-cart-btn" 
-                              onClick={() => addToCart(product)}
-                              style={{ flex: 1, padding: '8px', background: 'var(--color-text)', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer', fontSize: '13px' }}>
+                              onClick={(e) => { e.preventDefault(); e.stopPropagation(); addToCart(product); }}
+                              style={{ flex: 1, padding: '10px', background: 'var(--color-primary)', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer', fontSize: '12px', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
                               Add to Bag
                             </button>
                             <button 
                               className="wishlist-btn" 
-                              onClick={() => addToWishlist(product)}
-                              style={{ width: '36px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--color-secondary)', border: 'none', borderRadius: '4px', cursor: 'pointer', color: 'var(--color-text)' }}>
-                              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
-                              </svg>
+                              title="Add to Wishlist"
+                              onClick={(e) => { e.preventDefault(); e.stopPropagation(); addToWishlist(product); }}
+                              style={{ width: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'transparent', border: '1px solid var(--color-border)', borderRadius: '4px', cursor: 'pointer', color: 'var(--color-text)' }}>
+                              ♡
                             </button>
                         </div>
                     </div>
-                </div>
+                </Link>
             ))}
           </div>
 
           <div className="pagination">
-              <button>Previous</button>
-              <Link to="#" className="active">1</Link>
-              <Link to="#">2</Link>
-              <Link to="#">3</Link>
-              <button>Next</button>
+              <button 
+                onClick={() => goToPage(currentPage - 1)}
+                disabled={currentPage === 1}
+                style={currentPage === 1 ? { opacity: 0.5, cursor: 'not-allowed' } : { cursor: 'pointer' }}
+              >
+                Previous
+              </button>
+              
+              {[1, 2, 3].map(page => (
+                <a 
+                  href="#" 
+                  key={page}
+                  className={currentPage === page ? 'active' : ''}
+                  onClick={(e) => goToPage(page, e)}
+                  style={{ textDecoration: 'none', cursor: 'pointer' }}
+                >
+                  {page}
+                </a>
+              ))}
+
+              <button 
+                onClick={() => goToPage(currentPage + 1)}
+                disabled={currentPage === 3}
+                style={currentPage === 3 ? { opacity: 0.5, cursor: 'not-allowed' } : { cursor: 'pointer' }}
+              >
+                Next
+              </button>
           </div>
         </div>
       </div>

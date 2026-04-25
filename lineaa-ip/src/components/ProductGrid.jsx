@@ -34,9 +34,11 @@ const products = [
   },
 ];
 
+import { Link } from 'react-router-dom';
+
 function ProductCard({ product }) {
   return (
-    <div className="product-card">
+    <Link to={`/product/${product.id}`} className="product-card" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
       <div className="product-image">
         {product.badge && <span className="badge">{product.badge}</span>}
         <img src={product.imgMain} className="img-main" alt={product.name} />
@@ -49,7 +51,7 @@ function ProductCard({ product }) {
           <span>{product.price}</span>
         </div>
       </div>
-    </div>
+    </Link>
   );
 }
 
