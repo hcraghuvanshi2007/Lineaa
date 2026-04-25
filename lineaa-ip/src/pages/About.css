@@ -1,0 +1,292 @@
+/* ABOUT PAGES COMBINED STYLES */
+
+/* Shared */
+.page-hero, .story-hero {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 120px 24px 80px;
+  text-align: center;
+}
+
+.page-hero h1, .story-hero h1 {
+  font-size: 48px;
+  font-weight: 400;
+  margin-bottom: 16px;
+  color: var(--color-text);
+}
+
+.page-hero p, .story-hero p {
+  font-size: 18px;
+  color: var(--color-text-secondary);
+}
+
+.divider, .story-divider {
+  border: none;
+  border-top: 1px solid var(--color-border);
+  margin-top: 64px;
+}
+
+.section, .story-section, .heritage, .values {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 100px 24px;
+}
+
+.section h2, .heritage h2, .values h2 {
+  font-size: 32px;
+  font-weight: 400;
+  margin-bottom: 48px;
+}
+
+.two-col, .story-grid, .heritage-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+}
+
+.block h3, .heritage-block h3, .value-item h3 {
+  font-size: 20px;
+  margin-bottom: 16px;
+}
+
+.block p, .heritage-block p, .value-item p, .story-text p {
+  font-size: 16px;
+  color: var(--color-text-secondary);
+}
+
+/* Our Story Specific */
+.story-image img {
+  width: 100%;
+  display: block;
+}
+
+.story-text h2 {
+  font-size: 32px;
+  font-weight: 400;
+  margin-bottom: 24px;
+}
+
+.values-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 80px;
+}
+
+/* Sustainability Specific */
+.impact {
+  background: var(--color-surface);
+}
+
+.impact-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 80px;
+}
+
+.impact-item h3 {
+  font-size: 32px;
+  font-weight: 400;
+  margin-bottom: 8px;
+}
+
+.impact-item p {
+  font-size: 14px;
+  color: var(--color-text-secondary);
+}
+
+.cert-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 48px;
+  margin-top: 48px;
+}
+
+.cert {
+  font-size: 14px;
+  color: var(--color-text-secondary);
+}
+
+/* Size Guide Specific */
+.methods {
+  background: var(--color-surface);
+  padding: 64px;
+}
+.methods h3 {
+  font-size: 20px;
+  margin-bottom: 24px;
+}
+.methods-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+}
+.method h4 {
+  font-size: 16px;
+  margin-bottom: 16px;
+}
+.method ol {
+  padding-left: 20px;
+  color: var(--color-text-secondary);
+}
+.method li {
+  margin-bottom: 8px;
+}
+
+.table-wrapper {
+  margin-top: 64px;
+  overflow-x: auto;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+th, td {
+  padding: 14px;
+  border: 1px solid var(--color-border);
+  text-align: left;
+}
+th {
+  font-weight: 500;
+  background: var(--color-surface);
+}
+
+.list-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--color-border);
+  font-size: 14px;
+}
+
+.help {
+  background: var(--color-surface);
+}
+.help p {
+  max-width: 700px;
+  color: var(--color-text-secondary);
+  margin-bottom: 32px;
+}
+.help-buttons {
+  display: flex;
+  gap: 16px;
+}
+.btn-outline {
+  padding: 12px 20px;
+  border: 1px solid var(--color-border);
+  background: #fff;
+  font-size: 14px;
+  cursor: pointer;
+}
+.btn-solid {
+  padding: 12px 20px;
+  background: var(--color-text);
+  color: #fff;
+  border: none;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+/* Customer Care Specific */
+.contact-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 80px;
+}
+.contact-block h3 {
+  font-size: 18px;
+  margin-bottom: 12px;
+}
+.contact-block p {
+  font-size: 14px;
+  color: var(--color-text-secondary);
+}
+.chat-btn {
+  margin-top: 16px;
+  padding: 10px 18px;
+  border: 1px solid var(--color-border);
+  background: #fff;
+  cursor: pointer;
+}
+
+.faq {
+  max-width: 900px;
+}
+.faq-item {
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  margin-bottom: 16px;
+  transition: all 0.3s ease;
+}
+.faq-question {
+  padding: 18px 24px;
+  font-size: 15px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  user-select: none;
+}
+.faq-answer {
+  display: none;
+  padding: 0 24px 18px;
+  font-size: 14px;
+  color: var(--color-text-secondary);
+}
+.faq-item.active .faq-answer {
+  display: block;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+.form-group label {
+  font-size: 14px;
+  margin-bottom: 6px;
+}
+.form-group input,
+.form-group textarea {
+  padding: 12px;
+  border: 1px solid var(--color-border);
+  font-size: 14px;
+  border-radius: 4px;
+  font-family: inherit;
+}
+.form-group.full {
+  grid-column: 1 / -1;
+}
+.submit-btn {
+  margin-top: 24px;
+  padding: 16px;
+  width: 100%;
+  background: var(--color-text);
+  color: #fff;
+  border: none;
+  font-size: 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+.submit-btn:hover {
+  background: #333;
+}
+
+/* Responsive Overrides */
+@media (max-width: 1024px) {
+  .two-col, .story-grid, .heritage-grid, .impact-grid, .cert-grid, .methods-grid, .contact-grid, .form-grid, .values-grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+}
+
+@media (max-width: 768px) {
+  .page-hero h1, .story-hero h1 { font-size: 34px; }
+  .section, .story-section, .heritage, .values { padding: 72px 20px; }
+  .help-buttons { flex-direction: column; }
+}
