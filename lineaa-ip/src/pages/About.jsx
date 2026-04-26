@@ -2,11 +2,16 @@ import { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import './About.css';
 import foundersImg from '../assets/images/founders-ioSVwXFB.png';
+import storyHeroImg from '../assets/images/about_story_overview.png';
+import sustainHeroImg from '../assets/images/necklace-catalog.png';
+import sizeHeroImg from '../assets/images/solitaire-ring.png';
+import careHeroImg from '../assets/images/bracelet-catalog.png';
 
 function Story() {
   return (
     <div className="story-page">
       <section className="story-hero">
+        <span className="brand-subtitle">Our Heritage</span>
         <h1>Our Story</h1>
         <p>A journey of passion, craftsmanship, and timeless elegance</p>
         <hr className="story-divider" />
@@ -79,6 +84,7 @@ function Sustainability() {
   return (
     <div className="sustainability-page">
       <section className="page-hero">
+        <span className="brand-subtitle">Conscious Luxury</span>
         <h1>Sustainability</h1>
         <p>Creating beautiful jewelry while protecting our planet for future generations</p>
         <hr className="divider" />
@@ -170,6 +176,7 @@ function SizeGuide() {
   return (
     <div className="size-guide-page">
       <section className="page-hero">
+        <span className="brand-subtitle">The Perfect Fit</span>
         <h1>Size Guide</h1>
         <p>Find your perfect fit with our comprehensive sizing guide</p>
         <hr className="divider" />
@@ -284,6 +291,7 @@ function CustomerCare() {
   return (
     <div className="customer-care-page">
       <section className="page-hero">
+        <span className="brand-subtitle">At Your Service</span>
         <h1>Customer Care</h1>
         <p>We're here to help you with all your jewelry needs</p>
         <hr className="divider" />
@@ -357,6 +365,54 @@ function CustomerCare() {
   );
 }
 
+function MainAbout() {
+  return (
+    <div className="about-overview">
+      <section className="about-hero">
+        <span className="brand-subtitle">World of Lineaa</span>
+        <h1>Crafting Timeless Elegance</h1>
+        <p>A fusion of modern minimalism and heritage craftsmanship, designed for the conscious individual.</p>
+        <div className="hero-divider"></div>
+      </section>
+      
+      <div className="about-grid">
+        <Link to="/about/story" className="about-card" style={{ backgroundImage: `url(${storyHeroImg})` }}>
+          <div className="card-overlay"></div>
+          <div className="card-content">
+            <h2>Our Story</h2>
+            <p>The heritage and passion behind our vision.</p>
+            <span className="card-link">Explore the Archive</span>
+          </div>
+        </Link>
+        <Link to="/about/sustainability" className="about-card" style={{ backgroundImage: `url(${sustainHeroImg})` }}>
+          <div className="card-overlay"></div>
+          <div className="card-content">
+            <h2>Sustainability</h2>
+            <p>Our commitment to a beautiful, ethical future.</p>
+            <span className="card-link">Learn Our Ethics</span>
+          </div>
+        </Link>
+        <Link to="/about/size-guide" className="about-card" style={{ backgroundImage: `url(${sizeHeroImg})` }}>
+          <div className="card-overlay"></div>
+          <div className="card-content">
+            <h2>Size Guide</h2>
+            <p>Expert advice on finding your perfect fit.</p>
+            <span className="card-link">View Sizing Charts</span>
+          </div>
+        </Link>
+        <Link to="/about/customer-care" className="about-card" style={{ backgroundImage: `url(${careHeroImg})` }}>
+          <div className="card-overlay"></div>
+          <div className="card-content">
+            <h2>Customer Care</h2>
+            <p>Dedicated support for your jewelry journey.</p>
+            <span className="card-link">Get In Touch</span>
+          </div>
+        </Link>
+      </div>
+    </div>
+  );
+}
+
 function About() {
   const { page } = useParams();
 
@@ -370,13 +426,7 @@ function About() {
     case 'customer-care':
       return <CustomerCare />;
     default:
-      return (
-        <div style={{ textAlign: 'center', padding: '100px 20px' }}>
-          <h2>Page not found</h2>
-          <p>The information you are looking for does not exist.</p>
-          <Link to="/" style={{ color: 'var(--color-primary)' }}>Return Home</Link>
-        </div>
-      );
+      return <MainAbout />;
   }
 }
 

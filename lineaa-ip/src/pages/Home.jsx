@@ -2,6 +2,7 @@ import Hero from '../components/Hero';
 import Collections from '../components/Collections';
 import ProductGrid from '../components/ProductGrid';
 import CollectionThumbnails from '../components/CollectionThumbnails';
+import BrandExperience from '../components/BrandExperience';
 import MusicPlayer from '../components/MusicPlayer';
 
 function Home() {
@@ -13,6 +14,7 @@ function Home() {
         <Collections />
         <ProductGrid />
         <CollectionThumbnails />
+        <BrandExperience />
       </section>
     </>
   );

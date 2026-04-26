@@ -1,27 +1,40 @@
 import React, { useState, useEffect, useRef } from 'react';
+import brandAudio from '../assets/YouTube_Sparkle-Of-Heaven-Exquisite-Diamond-Jewe_Media_kYOP52BUZTI_009_128k.mp3';
 import './MusicPlayer.css';
 
 function MusicPlayer() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
-  const audioRef = useRef(new Audio('https://assets.mixkit.co/music/preview/mixkit-ambient-minimalist-meditation-444.mp3'));
+  const audioRef = useRef(new Audio(brandAudio));
   
   useEffect(() => {
     const audio = audioRef.current;
-    audio.loop = true;
-
-    // Attempt to autoplay (browsers might block this until interaction)
-    const playAttempt = () => {
-      audio.play()
-        .then(() => setIsPlaying(true))
-        .catch(err => {
-          console.log("Autoplay blocked, waiting for interaction");
-        });
+    
+    const handleLoop = () => {
+      if (audio.currentTime >= 52) {
+        audio.currentTime = 0;
+        audio.play();
+      }
     };
 
-    playAttempt();
+    audio.addEventListener('timeupdate', handleLoop);
+
+    // Initial play logic based on session storage
+    const isManuallyPaused = sessionStorage.getItem('music_paused') === 'true';
+    
+    if (!isManuallyPaused) {
+      const playAttempt = () => {
+        audio.play()
+          .then(() => setIsPlaying(true))
+          .catch(err => {
+            console.log("Autoplay blocked");
+          });
+      };
+      playAttempt();
+    }
 
     return () => {
+      audio.removeEventListener('timeupdate', handleLoop);
       audio.pause();
       audio.currentTime = 0;
     };
@@ -31,8 +44,10 @@ function MusicPlayer() {
     const audio = audioRef.current;
     if (isPlaying) {
       audio.pause();
+      sessionStorage.setItem('music_paused', 'true');
     } else {
       audio.play();
+      sessionStorage.setItem('music_paused', 'false');
     }
     setIsPlaying(!isPlaying);
   };

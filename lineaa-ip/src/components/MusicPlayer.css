@@ -107,3 +107,25 @@
 .paused .bar {
     height: 3px;
 }
+
+@media (max-width: 640px) {
+    .music-player-popup {
+        bottom: 20px;
+        left: 10px;
+        right: 10px;
+        width: calc(100% - 20px);
+        padding: 8px 16px;
+        gap: 10px;
+        justify-content: space-between;
+        border-radius: 12px;
+    }
+
+    .music-info span {
+        font-size: 11px;
+    }
+
+    .music-controls {
+        gap: 5px;
+        padding-left: 10px;
+    }
+}

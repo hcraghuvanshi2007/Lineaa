@@ -1,10 +1,48 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
-function SearchPanel({ onClose }) {
+function SearchPanel({ onClose, products = [] }) {
   const [searchValue, setSearchValue] = useState('');
+  const navigate = useNavigate();
 
   const handleTagClick = (tag) => {
     setSearchValue(tag);
+  };
+
+  // Live filtering of "available" products
+  const filteredProducts = useMemo(() => {
+    if (!searchValue.trim()) return [];
+    
+    const search = searchValue.toLowerCase();
+    
+    return products.filter(p => {
+      const name = p.name.toLowerCase();
+      const cat = p.category.toLowerCase();
+      
+      // Robust matching: check if either contains the other
+      const match = name.includes(search) || search.includes(name) || 
+                    cat.includes(search) || search.includes(cat);
+                    
+      const isAvailable = p.badge !== 'COMING SOON';
+      return match && isAvailable;
+    }).slice(0, 4); // Limit to 4 quick results
+  }, [searchValue, products]);
+
+  const handleSearchSubmit = (e) => {
+    if (e) e.preventDefault();
+    if (!searchValue.trim()) return;
+
+    // Check for exact product match
+    const exactMatch = products.find(p => p.name.toLowerCase() === searchValue.toLowerCase().trim());
+    
+    if (exactMatch) {
+      navigate(`/product/${exactMatch.id}`);
+    } else {
+      // General shop search
+      navigate(`/shop?q=${encodeURIComponent(searchValue.trim())}`);
+    }
+    
+    onClose('search');
   };
 
   return (
@@ -14,34 +52,163 @@ function SearchPanel({ onClose }) {
         <button className="panel-close" onClick={() => onClose('search')}>✕</button>
       </div>
       <div className="panel-content">
-        <div className="search-input-wrapper">
+        <form className="search-form" onSubmit={handleSearchSubmit}>
           <input
             type="text"
             placeholder="Search for jewelry..."
             id="search-input"
+            autoFocus
             value={searchValue}
             onChange={(e) => setSearchValue(e.target.value)}
           />
-        </div>
-        <div style={{ marginBottom: '20px' }}>
-          <h3 style={{ fontSize: '12px', fontWeight: '600', marginBottom: '15px', color: 'var(--color-text)' }}>
+          <button type="submit" className="search-submit-btn" title="Search">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+          </button>
+        </form>
+
+        <div style={{ marginBottom: '30px' }}>
+          <h3 style={{ fontSize: '12px', fontWeight: '600', marginBottom: '15px', color: 'var(--color-text)', textTransform: 'uppercase', letterSpacing: '1px' }}>
             Popular Searches
           </h3>
           <div className="popular-searches">
-            {['Gold Rings', 'Silver Necklaces', 'Pearl Earrings', 'Designer Bracelets', 'Wedding Rings', 'Vintage Collection'].map(tag => (
+            {['Pantheon', 'Eclipse', 'Shadow Line', 'Halo Series', 'Minimalist Rings'].map(tag => (
               <button key={tag} className="search-tag" onClick={() => handleTagClick(tag)}>
                 {tag}
               </button>
             ))}
           </div>
         </div>
+
+        {searchValue.trim() && (
+          <div className="search-results-container">
+            <h3 style={{ fontSize: '12px', fontWeight: '600', color: 'var(--color-text)', textTransform: 'uppercase', letterSpacing: '1px' }}>
+              {filteredProducts.length > 0 ? "Quick Results" : "No Available Products Found"}
+            </h3>
+            
+            <div id="quick-results">
+              {filteredProducts.map(product => (
+                <Link 
+                  key={product.id} 
+                  to={`/product/${product.id}`} 
+                  className="search-result-item"
+                  onClick={() => onClose('search')}
+                >
+                  <img src={product.img} alt={product.name} className="result-img" />
+                  <div className="result-info">
+                    <span className="name">{product.name}</span>
+                    <span className="price">€{product.price.toLocaleString()}</span>
+                  </div>
+                </Link>
+              ))}
+            </div>
+
+            {filteredProducts.length > 0 && (
+              <Link 
+                to={`/shop?q=${encodeURIComponent(searchValue)}`} 
+                className="view-more-search"
+                onClick={() => onClose('search')}
+              >
+                View All in Shop
+              </Link>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
 }
 
-function AccountPanel({ onClose }) {
+import { useAuth } from '../context/AuthContext';
+
+function AccountPanel({ onClose, profileData, setProfileData }) {
   const [activeTab, setActiveTab] = useState('login');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [fullName, setFullName] = useState('');
+  const [phone, setPhone] = useState('');
+  const [address, setAddress] = useState('');
+  const [city, setCity] = useState('');
+  const [country, setCountry] = useState('');
+  const [error, setError] = useState('');
+  const [msg, setMsg] = useState('');
+  const [loading, setLoading] = useState(false);
+  const { signup, login, logout, currentUser } = useAuth();
+
+  const handleAuth = async (e) => {
+    e.preventDefault();
+    setError('');
+    setMsg('');
+    setLoading(true);
+    try {
+      if (activeTab === 'login') {
+        await login(email, password);
+        onClose('account');
+      } else {
+        await signup(email, password);
+        // Update profile data in state immediately
+        setProfileData({
+          fullName,
+          phone,
+          address,
+          city,
+          country
+        });
+        setMsg('Account created successfully!');
+        setActiveTab('login');
+      }
+    } catch (err) {
+      setError(err.message.replace('Firebase:', '').trim());
+    }
+    setLoading(false);
+  };
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+      onClose('account');
+    } catch (err) {
+      setError('Failed to log out');
+    }
+  };
+
+  if (currentUser) {
+    return (
+      <div className="side-panel active" id="account-panel">
+        <div className="panel-header">
+          <h2>My Profile</h2>
+          <button className="panel-close" onClick={() => onClose('account')}>✕</button>
+        </div>
+        <div className="panel-content">
+          <div className="profile-info">
+            <div className="profile-avatar">
+              {profileData.fullName ? profileData.fullName[0].toUpperCase() : currentUser.email[0].toUpperCase()}
+            </div>
+            <h3>{profileData.fullName || 'Welcome Member'}</h3>
+            <p style={{ fontSize: '13px', color: 'var(--color-text-secondary)', marginBottom: '15px' }}>{currentUser.email}</p>
+            
+            {profileData.address && (
+              <div className="profile-meta" style={{ textAlign: 'center', fontSize: '13px', color: 'var(--color-text-secondary)', marginTop: '10px' }}>
+                <p>{profileData.address}</p>
+                <p>{profileData.city}, {profileData.country}</p>
+                <p>{profileData.phone}</p>
+              </div>
+            )}
+          </div>
+          
+          <div className="profile-links">
+            <Link to="/wishlist" className="profile-link" onClick={() => onClose('account')}>My Favorites</Link>
+            <Link to="/orders" className="profile-link" onClick={() => onClose('account')}>Order History</Link>
+            <Link to="/about/customer-care" className="profile-link" onClick={() => onClose('account')}>Support</Link>
+          </div>
+
+          <button className="logout-btn" onClick={handleLogout}>Sign Out</button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="side-panel active" id="account-panel">
@@ -65,45 +232,101 @@ function AccountPanel({ onClose }) {
           </button>
         </div>
 
+        {error && <div className="auth-error">{error}</div>}
+        {msg && <div className="auth-success">{msg}</div>}
+
+        <form onSubmit={handleAuth} className="auth-form">
+          {activeTab === 'signup' && (
+             <>
+               <div className="form-group">
+                 <label>Full Name</label>
+                 <input 
+                   type="text" 
+                   placeholder="Your Name" 
+                   required 
+                   value={fullName}
+                   onChange={(e) => setFullName(e.target.value)}
+                 />
+               </div>
+               <div className="form-group">
+                 <label>Phone Number</label>
+                 <input 
+                   type="tel" 
+                   placeholder="+1 (555) 000-0000" 
+                   required 
+                   value={phone}
+                   onChange={(e) => setPhone(e.target.value)}
+                 />
+               </div>
+               <div className="form-group">
+                 <label>Address</label>
+                 <input 
+                   type="text" 
+                   placeholder="123 Boutique St" 
+                   required 
+                   value={address}
+                   onChange={(e) => setAddress(e.target.value)}
+                 />
+               </div>
+               <div className="form-row" style={{ display: 'flex', gap: '10px' }}>
+                 <div className="form-group" style={{ flex: 1 }}>
+                   <label>City</label>
+                   <input 
+                     type="text" 
+                     placeholder="Paris" 
+                     required 
+                     value={city}
+                     onChange={(e) => setCity(e.target.value)}
+                   />
+                 </div>
+                 <div className="form-group" style={{ flex: 1 }}>
+                   <label>Country</label>
+                   <input 
+                     type="text" 
+                     placeholder="France" 
+                     required 
+                     value={country}
+                     onChange={(e) => setCountry(e.target.value)}
+                   />
+                 </div>
+               </div>
+             </>
+          )}
+
+          <div className="form-group">
+            <label>Email Address</label>
+            <input 
+              type="email" 
+              placeholder="your@email.com" 
+              required 
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </div>
+          <div className="form-group">
+            <label>Password</label>
+            <input 
+              type="password" 
+              placeholder="••••••••" 
+              required 
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </div>
+          <button className="login-btn" disabled={loading}>
+            {loading ? 'Processing...' : (activeTab === 'login' ? 'Login' : 'Create Account')}
+          </button>
+        </form>
+
         {activeTab === 'login' && (
-          <div className="tab-content active" id="login-tab">
-            <div className="form-group">
-              <label>Email Address</label>
-              <input type="email" placeholder="your@email.com" />
-            </div>
-            <div className="form-group">
-              <label>Password</label>
-              <input type="password" placeholder="••••••••" />
-            </div>
-            <button className="login-btn">Login</button>
-            <div className="signup-link">
-              <a href="#">Forgot password?</a>
-            </div>
+          <div className="signup-link">
+            <a href="#">Forgot password?</a>
           </div>
         )}
 
         {activeTab === 'signup' && (
-          <div className="tab-content active" id="signup-tab">
-            <div className="form-group">
-              <label>First Name</label>
-              <input type="text" placeholder="John" />
-            </div>
-            <div className="form-group">
-              <label>Last Name</label>
-              <input type="text" placeholder="Doe" />
-            </div>
-            <div className="form-group">
-              <label>Email Address</label>
-              <input type="email" placeholder="your@email.com" />
-            </div>
-            <div className="form-group">
-              <label>Password</label>
-              <input type="password" placeholder="••••••••" />
-            </div>
-            <button className="login-btn">Create Account</button>
-            <div className="signup-link">
-              By signing up, you agree to our <a href="#">Terms</a>
-            </div>
+          <div className="signup-link">
+            By signing up, you agree to our <a href="#">Terms</a>
           </div>
         )}
       </div>
@@ -132,7 +355,15 @@ function WishlistPanel({ onClose, wishlistData, setWishlistData }) {
             {wishlistData.map(item => (
               <div key={item.id} className="wishlist-item" style={{ display: 'flex', gap: '15px', padding: '15px 0', borderBottom: '1px solid var(--color-border)', alignItems: 'center' }}>
                 <div className="wishlist-item-image" style={{ width: '70px', height: '70px', background: 'var(--color-secondary)', borderRadius: '6px', overflow: 'hidden' }}>
-                  <img src={item.img} alt={item.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  <img 
+                    src={products?.find(p => p.id === item.id)?.img || item.img} 
+                    alt={item.name} 
+                    style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+                    onError={(e) => {
+                      const fallback = products?.find(p => p.id === item.id)?.img;
+                      if (fallback) e.target.src = fallback;
+                    }}
+                  />
                 </div>
                 <div className="wishlist-item-details" style={{ flex: 1 }}>
                   <div className="wishlist-item-name" style={{ fontSize: '13px', fontWeight: '500', marginBottom: '5px' }}>{item.name}</div>
@@ -195,7 +426,14 @@ function CartPanel({ onClose, cartData, setCartData, wishlistData, setWishlistDa
             {cartData.map(item => (
               <div key={item.id} className="cart-item">
                 <div className="cart-item-image">
-                  <img src={item.img} alt={item.name} />
+                  <img 
+                    src={products?.find(p => p.id === item.id)?.img || item.img} 
+                    alt={item.name} 
+                    onError={(e) => {
+                      const fallback = products?.find(p => p.id === item.id)?.img;
+                      if (fallback) e.target.src = fallback;
+                    }}
+                  />
                 </div>
                 <div className="cart-item-details">
                   <div className="cart-item-name">{item.name}</div>
@@ -226,7 +464,9 @@ function CartPanel({ onClose, cartData, setCartData, wishlistData, setWishlistDa
           <span>Total</span>
           <span id="total">€{subtotal.toLocaleString()}</span>
         </div>
-        <button className="login-btn" style={{ marginTop: '15px' }}>Proceed to Checkout</button>
+        <Link to="/checkout" className="login-btn" style={{ marginTop: '15px', display: 'block', textDecoration: 'none', textAlign: 'center' }} onClick={() => onClose('cart')}>
+          Proceed to Checkout
+        </Link>
         <button
           className="login-btn"
           style={{ background: 'transparent', color: 'var(--color-text)', border: '1px solid var(--color-border)', marginTop: '10px' }}
@@ -281,14 +521,14 @@ function CartPanel({ onClose, cartData, setCartData, wishlistData, setWishlistDa
   );
 }
 
-function SidePanels({ activePanel, onClose, cartData, setCartData, wishlistData, setWishlistData }) {
+function SidePanels({ activePanel, onClose, cartData, setCartData, wishlistData, setWishlistData, products, profileData, setProfileData }) {
   if (!activePanel) return null;
 
   return (
     <>
       <div className="panel-overlay active" id="panel-overlay" onClick={() => onClose(activePanel)} />
-      {activePanel === 'search' && <SearchPanel onClose={onClose} />}
-      {activePanel === 'account' && <AccountPanel onClose={onClose} />}
+      {activePanel === 'search' && <SearchPanel onClose={onClose} products={products} />}
+      {activePanel === 'account' && <AccountPanel onClose={onClose} profileData={profileData} setProfileData={setProfileData} />}
       {activePanel === 'wishlist' && <WishlistPanel onClose={onClose} wishlistData={wishlistData} setWishlistData={setWishlistData} />}
       {activePanel === 'cart' && <CartPanel onClose={onClose} cartData={cartData} setCartData={setCartData} wishlistData={wishlistData} setWishlistData={setWishlistData} />}
     </>

@@ -1,0 +1,56 @@
+# Deployment Guide: avancaa.in
+
+Since you are already using **Firebase** for your database, the most professional way to deploy is through **Firebase Hosting**. It's fast, free, and integrates perfectly with your current setup.
+
+## Phase 1: Prepare the Code
+Before deploying, we need to create the production build of your website.
+
+1. Open your terminal in the project folder.
+2. Run the build command:
+   ```bash
+   npm run build
+   ```
+   *This creates a `dist` folder containing your entire website ready for the world.*
+
+## Phase 2: Setup Firebase Hosting
+1. If you haven't installed the Firebase tools:
+   ```bash
+   npm install -g firebase-tools
+   ```
+2. Login to your account:
+   ```bash
+   firebase login
+   ```
+3. Initialize hosting (run this once):
+   ```bash
+   firebase init hosting
+   ```
+   - Select your existing project.
+   - For **public directory**, type: `dist`
+   - Configure as a single-page app? **Yes**
+   - Github deploys? **No** (unless you want them).
+
+4. **Deploy!**
+   ```bash
+   firebase deploy
+   ```
+
+## Phase 3: Connect `avancaa.in`
+1. Go to your [Firebase Console](https://console.firebase.google.com/).
+2. Select **Hosting** from the left menu.
+3. Click **Add Custom Domain**.
+4. Enter `avancaa.in`.
+5. Firebase will give you two **"A Records"** (IP addresses).
+
+## Phase 4: Update Hostinger DNS
+1. Go to your **Hostinger Panel** (as seen in your screenshot).
+2. Click **Edit** next to **DNS/Nameservers**.
+3. Add the two **A Records** provided by Firebase.
+   - **Type**: A
+   - **Name**: @ (or leave blank)
+   - **Points to**: [The IP address from Firebase]
+4. **Wait**: It can take a few minutes to a few hours for the domain to "point" to your new site.
+
+---
+> [!TIP]
+> Once deployed, any future changes you make can be pushed live instantly by just running `npm run build` and `firebase deploy` again!

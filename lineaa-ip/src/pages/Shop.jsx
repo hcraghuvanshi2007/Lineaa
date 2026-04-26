@@ -1,19 +1,7 @@
 import './Shop.css';
 import { Link, useSearchParams } from 'react-router-dom';
 
-import haloImg from '../assets/images/halo-CMlMG7vQ.jpg';
-import obliqueImg from '../assets/images/oblique-BrLAWbgb.jpg';
-import shadowlineImg from '../assets/images/shadowline-DPSA61jB.jpg';
-import pantheonImg from '../assets/images/pantheon-ChbEbbTu.jpg';
-import eclipseImg from '../assets/images/eclipse-ErA5xE4T.jpg';
-
-const products = [
-  { id: 1, name: 'Pantheon', category: 'Earrings', price: 2850, img: pantheonImg, badge: 'NEW' },
-  { id: 2, name: 'Eclipse', category: 'Bracelets', price: 3200, img: eclipseImg, badge: 'EXCLUSIVE' },
-  { id: 3, name: 'Halo', category: 'Earrings', price: 1950, img: haloImg, badge: 'NEW' },
-  { id: 4, name: 'Oblique', category: 'Earrings', price: 1790, img: obliqueImg, badge: 'COMING SOON' },
-  { id: 5, name: 'Shadow Line', category: 'Bracelets', price: 2340, img: shadowlineImg, badge: 'EXCLUSIVE' },
-];
+import { allProducts as products } from '../data/products';
 
 import { useState, useEffect } from 'react';
 
@@ -28,19 +16,30 @@ function Shop({ addToCart, addToWishlist }) {
   // Sync with URL parameters on mount/navigation
   useEffect(() => {
     const catParam = searchParams.get('category');
+    const queryParam = searchParams.get('q');
+    
     if (catParam) {
-      // Mapping URL plural/singular to match internal filter logic
       const cat = catParam.toLowerCase();
       const mapped = cat.endsWith('s') ? cat.slice(0, -1) : cat;
       setActiveCategories([mapped]);
     } else {
       setActiveCategories([]);
     }
+
+    // Handled in the filter effect below
   }, [searchParams]);
 
   // Apply filters whenever criteria change
   useEffect(() => {
     let filtered = products;
+    const query = searchParams.get('q')?.toLowerCase();
+
+    if (query) {
+      filtered = filtered.filter(p => 
+        p.name.toLowerCase().includes(query) || 
+        p.category.toLowerCase().includes(query)
+      );
+    }
 
     if (activeCategories.length > 0) {
       filtered = filtered.filter(p => activeCategories.some(cat => p.category.toLowerCase().includes(cat)));
@@ -68,7 +67,7 @@ function Shop({ addToCart, addToWishlist }) {
 
     setDisplayProducts([...filtered]);
     setCurrentPage(1); // Reset pagination on new filter
-  }, [activeCategories, activePrices, sortBy]);
+  }, [activeCategories, activePrices, sortBy, searchParams]);
 
   const handleCategoryChange = (val) => {
     setActiveCategories(prev => prev.includes(val) ? prev.filter(c => c !== val) : [...prev, val]);
