@@ -152,13 +152,22 @@ function AppContent() {
       openPanel('account');
       return;
     }
+    if (!product || !product.id) {
+      console.error("❌ Invalid product:", product);
+      return;
+    }
     setCartData(prev => {
-      const existing = prev.find(item => item.id === product.id);
+      const existing = prev.find(item => String(item.id) === String(product.id));
       if (existing) {
-        return prev.map(item => item.id === product.id ? { ...item, qty: item.qty + 1 } : item);
+        return prev.map(item => 
+          String(item.id) === String(product.id) 
+            ? { ...item, qty: item.qty + 1 } 
+            : item
+        );
       }
       return [...prev, { ...product, qty: 1 }];
     });
+    console.log("✅ Added to cart:", product.name);
     openPanel('cart');
   };
 
@@ -167,15 +176,23 @@ function AppContent() {
       openPanel('account');
       return;
     }
+    if (!product || !product.id) {
+      console.error("❌ Invalid product:", product);
+      return;
+    }
     setWishlistData(prev => {
-      if (prev.find(item => item.id === product.id)) return prev;
+      const exists = prev.find(item => String(item.id) === String(product.id));
+      if (exists) {
+        return prev.filter(item => String(item.id) !== String(product.id));
+      }
       return [...prev, product];
     });
+    console.log("✅ Wishlist updated for:", product.name);
     openPanel('wishlist');
   };
 
   const removeFromWishlist = (id) => {
-    setWishlistData(prev => prev.filter(item => item.id !== id));
+    setWishlistData(prev => prev.filter(item => String(item.id) !== String(id)));
   };
 
   const openPanel = (panelName) => {

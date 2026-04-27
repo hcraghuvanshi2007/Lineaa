@@ -334,9 +334,11 @@ function AccountPanel({ onClose, profileData, setProfileData }) {
   );
 }
 
-function WishlistPanel({ onClose, wishlistData, setWishlistData }) {
+function WishlistPanel({ onClose, wishlistData, setWishlistData, products = [] }) {
+  if (!wishlistData) return null;
+  
   const removeItem = (id) => {
-    setWishlistData(prev => prev.filter(item => item.id !== id));
+    setWishlistData(prev => prev.filter(item => String(item.id) !== String(id)));
   };
 
   return (
@@ -352,26 +354,30 @@ function WishlistPanel({ onClose, wishlistData, setWishlistData }) {
           </div>
         ) : (
           <div id="wishlist-items">
-            {wishlistData.map(item => (
-              <div key={item.id} className="wishlist-item" style={{ display: 'flex', gap: '15px', padding: '15px 0', borderBottom: '1px solid var(--color-border)', alignItems: 'center' }}>
-                <div className="wishlist-item-image" style={{ width: '70px', height: '70px', background: 'var(--color-secondary)', borderRadius: '6px', overflow: 'hidden' }}>
-                  <img 
-                    src={products?.find(p => p.id === item.id)?.img || item.img} 
-                    alt={item.name} 
-                    style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
-                    onError={(e) => {
-                      const fallback = products?.find(p => p.id === item.id)?.img;
-                      if (fallback) e.target.src = fallback;
-                    }}
-                  />
+            {wishlistData.map(item => {
+              const fullProduct = products.find(p => String(p.id) === String(item.id));
+              const imgSrc = fullProduct?.img || item.img;
+              
+              return (
+                <div key={item.id} className="wishlist-item" style={{ display: 'flex', gap: '15px', padding: '15px 0', borderBottom: '1px solid var(--color-border)', alignItems: 'center' }}>
+                  <div className="wishlist-item-image" style={{ width: '70px', height: '70px', background: 'var(--color-secondary)', borderRadius: '6px', overflow: 'hidden' }}>
+                    <img 
+                      src={imgSrc} 
+                      alt={item.name} 
+                      style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+                      onError={(e) => {
+                        if (fullProduct?.img) e.target.src = fullProduct.img;
+                      }}
+                    />
+                  </div>
+                  <div className="wishlist-item-details" style={{ flex: 1 }}>
+                    <div className="wishlist-item-name" style={{ fontSize: '13px', fontWeight: '500', marginBottom: '5px' }}>{item.name}</div>
+                    <div className="wishlist-item-price" style={{ fontSize: '14px', fontWeight: '600', color: 'var(--color-primary)' }}>€{item.price}</div>
+                  </div>
+                  <button className="remove-btn" onClick={() => removeItem(item.id)} style={{ background: 'none', border: 'none', color: 'var(--color-text-secondary)', cursor: 'pointer', fontSize: '18px' }}>✕</button>
                 </div>
-                <div className="wishlist-item-details" style={{ flex: 1 }}>
-                  <div className="wishlist-item-name" style={{ fontSize: '13px', fontWeight: '500', marginBottom: '5px' }}>{item.name}</div>
-                  <div className="wishlist-item-price" style={{ fontSize: '14px', fontWeight: '600', color: 'var(--color-primary)' }}>€{item.price}</div>
-                </div>
-                <button className="remove-btn" onClick={() => removeItem(item.id)} style={{ background: 'none', border: 'none', color: 'var(--color-text-secondary)', cursor: 'pointer', fontSize: '18px' }}>✕</button>
-              </div>
-            ))}
+              );
+            })}
           </div>
         )}
       </div>
@@ -379,24 +385,27 @@ function WishlistPanel({ onClose, wishlistData, setWishlistData }) {
   );
 }
 
-function CartPanel({ onClose, cartData, setCartData, wishlistData, setWishlistData }) {
+function CartPanel({ onClose, cartData, setCartData, wishlistData, setWishlistData, products = [] }) {
   const [itemToRemove, setItemToRemove] = useState(null);
+  
+  if (!cartData) return null;
+  
   const updateQty = (id, delta) => {
     setCartData(prev =>
       prev.map(item =>
-        item.id === id ? { ...item, qty: Math.max(1, item.qty + delta) } : item
+        String(item.id) === String(id) ? { ...item, qty: Math.max(1, item.qty + delta) } : item
       )
     );
   };
 
   const removeItem = (id) => {
-    setCartData(prev => prev.filter(item => item.id !== id));
+    setCartData(prev => prev.filter(item => String(item.id) !== String(id)));
     setItemToRemove(null);
   };
 
   const moveToWishlist = (item) => {
     setWishlistData(prev => {
-      if (prev.find(w => w.id === item.id)) return prev;
+      if (prev.find(w => String(w.id) === String(item.id))) return prev;
       return [...prev, item];
     });
     removeItem(item.id);
@@ -423,31 +432,35 @@ function CartPanel({ onClose, cartData, setCartData, wishlistData, setWishlistDa
           </div>
         ) : (
           <div id="cart-items">
-            {cartData.map(item => (
-              <div key={item.id} className="cart-item">
-                <div className="cart-item-image">
-                  <img 
-                    src={products?.find(p => p.id === item.id)?.img || item.img} 
-                    alt={item.name} 
-                    onError={(e) => {
-                      const fallback = products?.find(p => p.id === item.id)?.img;
-                      if (fallback) e.target.src = fallback;
-                    }}
-                  />
-                </div>
-                <div className="cart-item-details">
-                  <div className="cart-item-name">{item.name}</div>
-                  <div style={{ fontSize: '12px', color: 'var(--color-text-secondary)', marginBottom: '5px' }}>{item.category}</div>
-                  <div className="cart-item-price">€{item.price.toLocaleString()}</div>
-                  <div className="cart-item-quantity">
-                    <button className="qty-btn" onClick={() => updateQty(item.id, -1)}>−</button>
-                    <span>{item.qty}</span>
-                    <button className="qty-btn" onClick={() => updateQty(item.id, 1)}>+</button>
+            {cartData.map(item => {
+              const fullProduct = products.find(p => String(p.id) === String(item.id));
+              const imgSrc = fullProduct?.img || item.img;
+              
+              return (
+                <div key={item.id} className="cart-item">
+                  <div className="cart-item-image">
+                    <img 
+                      src={imgSrc} 
+                      alt={item.name} 
+                      onError={(e) => {
+                        if (fullProduct?.img) e.target.src = fullProduct.img;
+                      }}
+                    />
                   </div>
+                  <div className="cart-item-details">
+                    <div className="cart-item-name">{item.name}</div>
+                    <div style={{ fontSize: '12px', color: 'var(--color-text-secondary)', marginBottom: '5px' }}>{item.category}</div>
+                    <div className="cart-item-price">€{item.price.toLocaleString()}</div>
+                    <div className="cart-item-quantity">
+                      <button className="qty-btn" onClick={() => updateQty(item.id, -1)}>−</button>
+                      <span>{item.qty}</span>
+                      <button className="qty-btn" onClick={() => updateQty(item.id, 1)}>+</button>
+                    </div>
+                  </div>
+                  <button className="remove-btn" onClick={() => setItemToRemove(item)}>✕</button>
                 </div>
-                <button className="remove-btn" onClick={() => setItemToRemove(item)}>✕</button>
-              </div>
-            ))}
+              );
+            })}
           </div>
         )}
       </div>
@@ -529,8 +542,8 @@ function SidePanels({ activePanel, onClose, cartData, setCartData, wishlistData,
       <div className="panel-overlay active" id="panel-overlay" onClick={() => onClose(activePanel)} />
       {activePanel === 'search' && <SearchPanel onClose={onClose} products={products} />}
       {activePanel === 'account' && <AccountPanel onClose={onClose} profileData={profileData} setProfileData={setProfileData} />}
-      {activePanel === 'wishlist' && <WishlistPanel onClose={onClose} wishlistData={wishlistData} setWishlistData={setWishlistData} />}
-      {activePanel === 'cart' && <CartPanel onClose={onClose} cartData={cartData} setCartData={setCartData} wishlistData={wishlistData} setWishlistData={setWishlistData} />}
+      {activePanel === 'wishlist' && <WishlistPanel onClose={onClose} wishlistData={wishlistData} setWishlistData={setWishlistData} products={products} />}
+      {activePanel === 'cart' && <CartPanel onClose={onClose} cartData={cartData} setCartData={setCartData} wishlistData={wishlistData} setWishlistData={setWishlistData} products={products} />}
     </>
   );
 }

@@ -33,10 +33,10 @@ function Wishlist({ wishlistData, addToCart, removeFromWishlist, allProducts }) 
                 <div className="product-image">
                   <Link to={`/product/${product.id}`}>
                     <img 
-                      src={allProducts?.find(p => p.id === product.id)?.img || product.img} 
+                      src={allProducts?.find(p => String(p.id) === String(product.id))?.img || product.img} 
                       alt={product.name} 
                       onError={(e) => {
-                        const fallback = allProducts?.find(p => p.id === product.id)?.img;
+                        const fallback = allProducts?.find(p => String(p.id) === String(product.id))?.img;
                         if (fallback) e.target.src = fallback;
                       }}
                     />

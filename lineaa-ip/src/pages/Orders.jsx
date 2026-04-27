@@ -58,11 +58,11 @@ function Orders({ ordersData, allProducts }) {
                   {order.items.map((item, i) => (
                     <div key={i} style={{ display: 'flex', gap: '20px', alignItems: 'center', padding: '10px 0' }}>
                       <img 
-                        src={allProducts?.find(p => p.id === item.id)?.img || item.img} 
+                        src={allProducts?.find(p => String(p.id) === String(item.id))?.img || item.img} 
                         alt={item.name} 
                         style={{ width: '80px', height: '80px', borderRadius: '8px', objectFit: 'cover' }} 
                         onError={(e) => {
-                          const fallback = allProducts?.find(p => p.id === item.id)?.img;
+                          const fallback = allProducts?.find(p => String(p.id) === String(item.id))?.img;
                           if (fallback) e.target.src = fallback;
                         }}
                       />
