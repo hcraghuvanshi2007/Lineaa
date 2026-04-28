@@ -16,6 +16,7 @@
     justify-content: space-between;
     align-items: center;
     height: 70px;
+    position: relative;
 }
 
 .navRight {
@@ -35,6 +36,7 @@
 .navbarMenu {
     display: flex;
     gap: 25px;
+    position: relative;
 }
 
 .navDropdown {
@@ -51,10 +53,17 @@
     gap: 5px;
     cursor: pointer;
     transition: color 0.3s ease;
+    background: none;
+    border: none;
+    padding: 0;
 }
 
 .dropdownToggle:hover {
     color: var(--color-primary);
+}
+
+.dropdownToggle:visited {
+    color: var(--color-text);
 }
 
 .dropdownToggle::after {
@@ -70,7 +79,7 @@
 
 .dropdownMenu {
     position: absolute;
-    top: calc(100% - 10px);
+    top: 100%;
     left: 0;
     background: var(--color-surface);
     border: 1px solid var(--color-border);
@@ -80,15 +89,18 @@
     opacity: 0;
     visibility: hidden;
     transition: all 0.25s ease;
-    margin-top: 10px;
+    margin-top: 5px;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
-    z-index: 9999; /* Ensure it's above everything */
+    z-index: 9999;
+    pointer-events: none;
 }
 
-.navDropdown:hover .dropdownMenu {
+/* Show on click - both desktop and mobile */
+.dropdownMenu.active {
     opacity: 1;
     visibility: visible;
-    margin-top: 0;
+    margin-top: 5px;
+    pointer-events: auto;
 }
 
 .dropdownItem {
@@ -131,10 +143,72 @@
     background-color: var(--color-background);
 }
 
+.menuToggle {
+    display: none;
+}
+
 /* MEDIA QUERIES */
 @media (max-width: 900px) {
     .navbarMenu {
-        display: none; /* Consider a hamburger menu later */
+        position: absolute;
+        top: 70px;
+        left: 0;
+        right: 0;
+        background-color: var(--color-surface);
+        border-bottom: 1px solid var(--color-border);
+        flex-direction: column;
+        gap: 0;
+        display: none;
+        padding: 15px 0;
+        z-index: 99;
+    }
+
+    .navbarMenu.menuOpen {
+        display: flex;
+    }
+
+    .navbarMenu.menuOpen .navDropdown {
+        width: 100%;
+        padding: 0 20px;
+    }
+
+    .navbarMenu.menuOpen .dropdownToggle {
+        padding: 10px 0;
+        font-size: 15px;
+    }
+
+    /* Dropdowns are hidden by default on mobile */
+    .navbarMenu.menuOpen .dropdownMenu {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        opacity: 0;
+        visibility: hidden;
+        padding: 0;
+        border: none;
+        margin-top: 5px;
+        box-shadow: none;
+        background: transparent;
+        pointer-events: none;
+        z-index: 999;
+    }
+
+    /* Show dropdown when active class is applied (click-based toggle) */
+    .navbarMenu.menuOpen .dropdownMenu.active {
+        opacity: 1;
+        visibility: visible;
+        padding: 8px 0;
+        border: 1px solid var(--color-border);
+        background-color: var(--color-surface);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+        pointer-events: auto;
+        z-index: 999;
+        margin-top: 5px;
+    }
+
+    .menuToggle {
+        display: flex !important;
     }
     
     .navbarContainer {

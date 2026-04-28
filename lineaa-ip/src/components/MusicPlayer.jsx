@@ -4,31 +4,15 @@ import './MusicPlayer.css';
 
 function MusicPlayer() {
   const [isPlaying, setIsPlaying] = useState(false);
-  const [isVisible, setIsVisible] = useState(true);
   const [collapsed, setCollapsed] = useState(false);
-  const [isRemoved, setIsRemoved] = useState(false);
-  const [showRestoreBtn, setShowRestoreBtn] = useState(false);
-  const audioRef = useRef(new Audio(brandAudio));
-  
-  useEffect(() => {
-    // Check if player was removed in this session
-    const wasRemoved = sessionStorage.getItem('player_removed') === 'true';
-    if (wasRemoved) {
-      setIsRemoved(true);
-      setShowRestoreBtn(true);
-    }
-  }, []);
+  const [isVisible, setIsVisible] = useState(true);
 
+  const audioRef = useRef(new Audio(brandAudio));
+
+  // 🔊 Handle autoplay + loop
   useEffect(() => {
-    if (isRemoved) {
-      audioRef.current.pause();
-      setIsVisible(false);
-      sessionStorage.setItem('player_removed', 'true');
-      return;
-    }
-    
     const audio = audioRef.current;
-    
+
     const handleLoop = () => {
       if (audio.currentTime >= 52) {
         audio.currentTime = 0;
@@ -38,76 +22,47 @@ function MusicPlayer() {
 
     audio.addEventListener('timeupdate', handleLoop);
 
-    // Initial play logic based on session storage
-    const isManuallyPaused = sessionStorage.getItem('music_paused') === 'true';
-    
-    if (!isManuallyPaused) {
-      const playAttempt = () => {
-        audio.play()
-          .then(() => setIsPlaying(true))
-          .catch(err => {
-            console.log("Autoplay blocked");
-          });
-      };
-      playAttempt();
-    }
+    // Try autoplay (will fail silently if blocked)
+    audio.play()
+      .then(() => setIsPlaying(true))
+      .catch(() => console.log("Autoplay blocked"));
 
     return () => {
       audio.removeEventListener('timeupdate', handleLoop);
       audio.pause();
       audio.currentTime = 0;
     };
-  }, [isRemoved]);
+  }, []);
 
+  // ▶️ Play / Pause
   const togglePlay = () => {
     const audio = audioRef.current;
+
     if (isPlaying) {
       audio.pause();
-      sessionStorage.setItem('music_paused', 'true');
     } else {
       audio.play();
-      sessionStorage.setItem('music_paused', 'false');
     }
+
     setIsPlaying(!isPlaying);
   };
 
+  // ❌ Remove player (only for current session)
   const removePlayer = () => {
-    if (window.confirm("Remove player? (It will reappear when you reload the page)")) {
-      setIsRemoved(true);
-    }
+    setIsVisible(false);
   };
 
-  const restorePlayer = () => {
-    setIsRemoved(false);
-    setShowRestoreBtn(false);
-    setCollapsed(false);
-    sessionStorage.removeItem('player_removed');
-    setIsVisible(true);
-    setIsPlaying(false);
-  };
-
-  if (!isVisible && !showRestoreBtn) return null;
-
-  // Show restore button when player is removed
-  if (isRemoved && showRestoreBtn) {
-    return (
-      <button 
-        className="restore-player-btn"
-        onClick={restorePlayer}
-        title="Restore Music Player"
-      >
-        🎵 Restore Player
-      </button>
-    );
-  }
-
+  // 🛑 If removed → don't render
   if (!isVisible) return null;
 
   return (
-    <div className={`music-player-popup ${isPlaying ? 'playing' : 'paused'} ${collapsed ? 'collapsed' : ''}`}>
+    <div
+      className={`music-player-popup ${isPlaying ? 'playing' : 'paused'} ${collapsed ? 'collapsed' : ''}`}
+    >
       {collapsed ? (
-        <button 
-          className="mini-btn" 
+        // 🔵 Mini Circle Mode
+        <button
+          className="mini-btn"
           onClick={(e) => {
             e.stopPropagation();
             setCollapsed(false);
@@ -118,6 +73,7 @@ function MusicPlayer() {
         </button>
       ) : (
         <>
+          {/* 🎵 Info */}
           <div className="music-info">
             <div className="music-bars">
               <div className="bar"></div>
@@ -127,10 +83,12 @@ function MusicPlayer() {
             </div>
             <span>Ambient Mood</span>
           </div>
-          
+
+          {/* 🎛 Controls */}
           <div className="music-controls">
-            <button 
-              className="play-toggle" 
+            {/* ▶️ Play/Pause */}
+            <button
+              className="play-toggle"
               onClick={(e) => {
                 e.stopPropagation();
                 togglePlay();
@@ -147,8 +105,10 @@ function MusicPlayer() {
                 </svg>
               )}
             </button>
-            <button 
-              className="collapse-btn" 
+
+            {/* 🔽 Collapse */}
+            <button
+              className="collapse-btn"
               onClick={(e) => {
                 e.stopPropagation();
                 setCollapsed(true);
@@ -159,8 +119,10 @@ function MusicPlayer() {
                 <path d="M18 6L6 18M6 6l12 12" />
               </svg>
             </button>
-            <button 
-              className="remove-btn" 
+
+            {/* ❌ Remove */}
+            <button
+              className="remove-btn"
               onClick={(e) => {
                 e.stopPropagation();
                 removePlayer();

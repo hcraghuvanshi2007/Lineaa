@@ -22,8 +22,8 @@ function Footer() {
             <div className="footer-block">
               <strong>Contact</strong>
               <p>
-                +1 (212) 555-0123<br />
-                hello@lineajewelry.com
+                +91 9015XXXXXX<br />
+                avancaa@lineajewelry.com
               </p>
             </div>
           </div>
